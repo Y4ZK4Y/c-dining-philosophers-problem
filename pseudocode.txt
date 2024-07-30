@@ -1,0 +1,262 @@
+
+// challenges: starvation - synchronization - fair allocation of resources - deadlock prevention
+
+// time tracking - synchronization - state management
+
+// deadlock prevention algos: 1. resource hierarchy 2. odd/even
+// starvation avoidance: fair queueing(scheduling system) queue philos based on turns
+monitor states; to see who has been waiting the longest
+
+// one thread per philo
+// no global variable
+// one fork per philo// 
+// a mutex per fork and that it's used to check the fork value and/or change it.
+// outputs should not mix up
+// death of a philo should be verified
+// there should be a mutex to prevent philo from dying and starting eating at the same time
+// do not test with more tahn 200 philos
+// to run the program:
+// ./philo <num_philo> <time_die> <time_eat> <time_sleep>
+// ints between 0 and int_max
+
+// atomic variables?
+
+
+
+// time each state
+philo_life_cycle()
+{
+    while (sim not ended) // or while philo alive
+    {
+        think();
+        pickup forks();
+        eat();
+        put_down_forks();
+        sleep();    
+    }
+}
+
+sim()
+{
+
+}
+
+
+init()
+{
+    init_philos();
+    init_forks();
+    init_logs();
+}
+
+
+wait for philos to finish or if somebody dies
+main()
+{
+    parse();
+    init();
+    start similation();
+    monitor for starvation or completion of reqs;
+    cleanup exit;
+}
+
+
+cleanup()
+{
+    destroy mutexes;
+    free resources();
+}
+
+
+forks can be an array of mutexes
+mutexes for logging
+
+
+think()
+{
+    logging;
+
+}
+
+
+// watch out for deadlocks
+// using a waiter algorithm where philos pick u p the lowered num fork first,e xcept for guy numebr 1 who picksup the higher numbered.
+
+pick_up_forks()
+{
+    lock fork
+    while fork not available
+        wait
+    unlock fork
+}
+
+
+
+put down forks()
+{
+    signal that its done and other can eat (monitor)
+}
+
+
+// request monitor for eating
+eat()
+{
+    mark start of eating;
+    wait for (time_to_eat)
+    meal_count++
+    last_meal update;
+}
+
+sleep()
+{
+    log;
+    wait for time_to_sleep;
+}
+
+
+// only on thread can log at a time// use mutexes
+logging()
+{
+    time_stamp
+}
+
+
+// a thread
+monitor()
+{
+    while (sim ok)
+    {
+        check philos lastmeal time;
+        if philo starved
+            end sim;
+    }
+
+}
+
+
+figure out the shared resources to specify the "critical section" of the program
+logs - forks - philo satates?
+
+
+typedef struct fork
+whos holding the work
+locked or unlocked
+
+
+philos queue ? circular singly linked list? 
+philosophers pick up forks in a consistant torder
+if i use a doubly linked list for philosophers, does that violate the yjey shouldf not talk to each other rule ?
+
+
+shared resources:
+forks(mutexes)
+states (an array)
+should it be a struct??
+typedef struct shared resources{
+
+}; shared_resources
+shared_resources shared;
+for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
+    pthread_mutex_init(&shared.forks[i], NULL);
+}
+
+
+int left_fork = philosopher_id;
+int right_fork = (philosopher_id + 1) % NUM_PHILOSOPHERS;
+
+
+philo_lifecycle();
+get_time_ms();
+eat();
+sleep();
+think();
+pick_up_forks();
+put_down_forks();
+
+
+
+structs:
+
+typedef struct s_info
+{
+    t_philo *philosophers;
+    t_forks *forks;
+    t_logging *logs;
+    t_input *input;
+    
+    bool is_dead;
+
+}   t_info;
+
+
+enum philo_states{
+    eating,
+    thinking,
+    sleeping,
+    dead,
+    hungry,
+};
+
+
+enum simulation_state {
+    active,
+    inactive,
+
+};
+
+typedef struct s_philo {
+    int id; // 1 to num_philo
+    long long last_meal_time;
+    int num_meals;
+    *left_fork;
+    *right_fork;
+    char *philos[];
+    pthread_t thread;
+
+    
+
+} t_philo;
+
+typedef struct s_input
+{
+    int num_of_philos;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep; // long long
+
+}   t_input;
+
+typedef struct s_monitor
+{
+    does it need mutex?
+    static_assertforks availability
+
+}   t_monitor;
+
+
+
+
+parse()
+{
+
+}
+./philo 10 20 30 40
+
+
+// enum simulation_state {
+//     active,
+//     inactive,
+
+// };
+
+// typedef struct s_monitor
+// {
+//     does it need mutex?
+//     static_assertforks availability
+
+// }   t_monitor;
+
+
+*left_fork;
+    *right_fork;
+    char *philos[];
