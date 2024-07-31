@@ -1,12 +1,15 @@
 #include "philo.h"
 
 
-int	pickup_forks()
+int	pickup_forks(t_philo *philo)
 {
 	log_message();
 
 }
+int	put_down_forks(t_philo *philo)
+{
 
+}
 void	think(t_philo *philo)
 {
 	log_message(philo, THINKING);
@@ -33,23 +36,22 @@ single_philo()
 
 }
 
-void	*philo_life_cycle(void *ptr)
+void	*philo_life_cycle(void *arg)
 {
 	t_philo	*philo;
-	philo = ptr;
 
-	init_monitor(philo->info->monitor);
-	while (philo alive)
+	philo = arg;
+	while (philo->info->sim_on)
 	{
-		think();
-		pickup_forks();
-		eat();
-		sleep();
-		//uspleep(1000);
+		think(philo);
+		request_permission_to_eat(philo);
+		pickup_forks(philo);
+		eat(philo);
+		put_down_forks(philo);
+		sleep(philo);
+		uspleep(1000);
 	}
 	pthread_join(monitor, NULL);
 
-
-	
 	return (NULL);
 }

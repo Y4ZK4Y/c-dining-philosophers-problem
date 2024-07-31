@@ -4,31 +4,33 @@ int	init_philos(t_info *info)
 {
 	int	i;
 	int	philo_count;
+
 	i = 0;
 	philo_count = info->input.num_of_philos;
-	bzero(&info->philos, sizeof(t_philo));
+	ft_bzero(&info->philos, sizeof(t_philo));
 	while (i < philo_count)
 	{
 		info->philos[i].id = i + 1;
 		info->philos[i].info = info;
-		info->philos[i].last_meal_time = get_current_time();
+		info->philos[i].last_meal_time = 0;
 		info->philos[i].state = INACTIVE;
-		info->philos->thread = malloc(philo_count * sizeof(pthread_t));
+		info->philos->thread = malloc(1 * sizeof(pthread_t));
 		if (info->philos->thread == NULL)
 		{
 			printf("malloc for threads in philo init failed\n");
 			return 1;
 		}
 		i++;
-		
 	}
+	return (0);
 }
 
 
-int	init_forks(t_info *info)
+int	init_mutexes(t_info *info)
 {
 	int	i;
 	int	philo_count;
+
 	i = 0;
 	philo_count = info->input.num_of_philos;
 	while (i < philo_count)
@@ -39,28 +41,35 @@ int	init_forks(t_info *info)
 			return 1;
 		}
 		i++;
-
 	}
+	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
+	{
+		printf("log mutex fugged\n");
+		return 1;
+	}
+	return 0;
+}
+
+int	init_monitor(t_info *info)
+{
+	ft_bzero(&info->monitor, sizeof(t_monitor));
 	info->monitor->thread= malloc(1 * sizeof(pthread_t));
 	if (info->monitor->thread == NULL)
 	{
 		printf("malloc for monitor in philo init dedd\n");
 		return 1;
 	}
-	return 0;
-
-}
-
-int	init_log(t_info *info)
-{
-	bzero(&info->logs, sizeof(t_log));
-	if (pthread_mutex_init(&info->logs->write_lock, NULL) != 0)
+	if (pthread_mutex_init(&info->monitor->turn_lock, NULL) != 0)
 	{
-		printf("log mutex fugged\n");
+		printf("monitor mutex got fucekd\n");
 		return 1;
 	}
-	return (0);
+	//info->monitor->queue = malloc(sizeof(t_philo *) * capacity);
+	//info->monitor->queue_size = 0;
+	//info->monitor->queue_capacity = capacity;
+	return 0;
 }
+
 
 int	init(t_info *info)
 {
@@ -75,23 +84,16 @@ int	init(t_info *info)
 		printf("init philos got fucked\n");
 		return 1;
 	}
-	// if (init_monitor(info) == 1)
-	// {
-	// 	printf("init monitor got fugged\n");
-	// 	return 1;
-	// }
-	if (init_forks(&info) == 1)
+	if (init_monitor(info) == 1)
+	{
+		printf("init monitor got fugged\n");
+		return 1;
+	}
+	if (init_mutexes(&info) == 1)
 	{
 		printf("init forks got fugged\n");
 		return 1;
 	}
-	if (init_log(&info) == 1)
-	{
-		printf("init log got fugged\n");
-		return 1;
-	}
-	//info->lets_fuckin_go = get_time();
-
-
-
+	info->sim_on = false;
+	return 0;
 }

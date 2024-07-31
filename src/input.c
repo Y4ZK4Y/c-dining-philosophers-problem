@@ -2,15 +2,17 @@
 
 int	parse_input(t_input *input, int argc, char *argv[])
 {
-	int	i;
-	int input_array[argc];
-	long num;
-	char *endptr;
+	int		i;
+	int		input_array[argc];
+	long	num;
+	char	*endptr;
+
 	i = 0;
+	ft_bzero(input, sizeof(t_input));
 	while (i++ < argc - 1)
 	{
 		errno = 0;
-		num = strtol(argv[i], &endptr, 10);
+		num = ft_strtol(argv[i], &endptr, 10);
 		if (errno != 0 || *endptr != '\0' || num < 0 || num > INT_MAX)
 		{
 			printf("Invalid input: %s\n", argv[i]);
@@ -25,7 +27,6 @@ int	parse_input(t_input *input, int argc, char *argv[])
 	input->time_to_eat = input_array[2];
 	input->time_to_sleep = input_array[3];
 	return 0;
-
 }
 
 int	get_input(t_input *input, int argc, char *argv[])
@@ -38,7 +39,7 @@ int	get_input(t_input *input, int argc, char *argv[])
 	}
 	if (input->num_of_philos <= 0)
 	{
-		printf("too few philos tf\n"); //  send to stderr
+		printf("too few philos tf\n"); // send to stderr
 	}
 	return (0);
 }

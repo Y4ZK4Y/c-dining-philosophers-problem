@@ -326,3 +326,116 @@ parse()
 
 output to stdout
 error to stderr
+
+
+
+----------------------------------------------------
+new plan:
+
+// monitor.c
+
+
+
+
+
+
+
+// philo_life_cycle
+philo_life_cycle()
+{
+
+}
+
+
+
+
+
+
+
+
+// sim.c
+
+wait_for_threads
+{
+    pthread join for every threads
+}
+
+create_threads
+{
+    create_thread for num_philo
+    sim_on true
+    get the start time
+}
+
+
+sim
+{
+    create_monitor;
+    create_threads();
+    wait_for_threads();
+}
+
+
+
+
+
+// init.c
+init_mutexes()
+{
+    mutex init for forks (num_philos);
+    init mutex for write_log;
+}
+
+
+init_philo
+{
+    for num of philos
+        init the struct
+        assign values
+        malloc for thread
+}
+
+
+init_monitor()
+{
+    malloc for one monitor;
+    init mutex turn lock;
+    assign values;
+
+}
+
+init
+{
+    malloc for num of philos (5 people ie)
+    init_philo(); //init struct for every philo
+    init_mutexes();
+    init_monitor();
+}
+
+
+
+// input.c
+parse_input
+{
+    initialize input struct;
+    ft_strtol argv into int;
+    assign values;
+}
+
+get_input
+{
+    check num of args;
+    parse input;
+    if num_philo 0 or less
+        exit;
+}
+
+
+// main.c
+main
+{
+    get_input();
+    philo_init();
+    start_sim();
+    exit_cleanup();
+}
