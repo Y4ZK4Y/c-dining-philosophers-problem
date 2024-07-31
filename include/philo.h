@@ -15,87 +15,124 @@
 /******************************************************************************/
 /* Macros */
 
-#define NUM_PHILOSOPHERS 5
+
 
 
 /******************************************************************************/
 /* Data Structures */
+typedef enum
+{
+					TAKEN_FORK,
+					EATING,
+					SLEEPING,
+					THINKING,
+					DIED,
+					NUM_MESSAGES
+}					msg_type;
+
+const char *messages[NUM_MESSAGES] =
+{
+					"%d %d has taken a fork.",
+					"%d %d is eating.",
+					"%d %d is sleeping",
+					"%d %d is thinking.",
+					"%d %d died."
+};
 
 enum philo_states
 {
-	EATING,
-	THINKING,
-	SLEEPING,
-	HUNGRY,
-	DEAD,
+					ALIVE,
+					EATING,
+					THINKING,
+					SLEEPING,
+					HUNGRY,
+					DEAD,
+					INACTIVE,
 };
+
+typedef struct s_philo
+{
+	int					id;
+	pthread_t			thread;
+	int					last_meal_time;
+	int					num_meals;
+	enum philo_states	state;
+	t_info				*info;
+}						t_philo;
+
 
 typedef struct s_monitor
 {
 	pthread_t			thread;
+	pthread_mutex_t		turn_lock;
+	t_philo				**queue;
+	int					queue_size;
+	int					queue_capacity;
+	bool				stop;
+}						t_monitor;
 
-}				t_monitor;
-
-typedef struct s_forks
-{
-	pthread_mutex_t		fork;
-	pthread_mutex_t		fork_plus;
-}						t_forks;
-
-typedef struct s_logging
+typedef struct s_log
 {
 	pthread_mutex_t		write_lock;
-}						t_logging;
-
-
-typedef struct s_philo
-{
-	int					id; // 1 to num_philo
-	pthread_t			thread;
-	int					last_meal_time;
-	int					num_meals;
-	enum philo_states	states;
-	pthread_t			monitor; // in here or in info sstruct ?
-	//t_info				*info;
-	//pthread_mutex_t		lock;
-
-} t_philo;
+}						t_log;
 
 /* Commandline arguments the program receives */
 typedef struct s_input
 {
-	int num_of_philos;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep; // long long?
-	//int num_times_to_eat; / optional
-	int error;
-}	t_input;
+	int					num_of_philos;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep; // long long?
+	int					error;
+}						t_input;
 
-
-/* One main struct to rule them all*/
+/* One main struct to rule them all */
 typedef struct s_info
 {
 	t_input				input;
 	t_philo				*philos;
-	t_forks				*forks;
-	t_logging			*logs;
-	// pthread_mutex_t		*fork;
-	// pthread_mutex_t		*fork_plus; // or one mutex for both forks?
-	int					lets_fuckin_go;
-	bool				is_dead;
+	t_log				*logs;
+	t_monitor			*monitor;
+	pthread_mutex_t		*forks;
+	//int					lets_fuckin_go;
+	bool				sim_on;
+	struct timeval		start;
 }						t_info;
 
-
 /******************************************************************************/
-
 /* Parsing */
-int			get_input(t_input *input, int argc, char *argv[]);
-int			parse_input(t_input *input, int argc, char *argv[]);
+int		get_input(t_input *input, int argc, char *argv[]);
+int		parse_input(t_input *input, int argc, char *argv[]);
 
-//void *func(void *arg);
-// void* philosopher_routine(void* arg);
+/* Initializing the program */
+int		init(t_info *info);
+int		init_philos(t_info *info);
+int		init_forks(t_info *info);
+int		init_log(t_info *info);
+
+/* Simulation */
+int		sim(t_info *info);
+int		create_philo(t_info *info);
+int		wait_for_everybody(t_info *info);
+void	*philo_life_cycle(void *ptr);
+void	eat(t_philo *philo);
+void	sleep(t_philo *philo);
+void	think(t_philo *philo);
+
 
 /* Utility Functions */
+void	ft_bzero(void *s, size_t n);
+size_t	ft_strlen(char *s);
+void	ft_putstr_fd(char *s, int fd);
+//void	error();
+
+
+/* Log */
+void	log_message(t_philo *philo, msg_type msgtype);
+
+/* Monitor */
+int		start_monitor(t_info *info);
+
+
 
 #endif

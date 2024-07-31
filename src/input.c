@@ -1,6 +1,5 @@
 #include "philo.h"
 
-
 int	parse_input(t_input *input, int argc, char *argv[])
 {
 	int	i;
@@ -29,21 +28,17 @@ int	parse_input(t_input *input, int argc, char *argv[])
 
 }
 
-
-
 int	get_input(t_input *input, int argc, char *argv[])
 {
 	if (argc != 5) // account for the optional arg (&& argc != 6)
-		return (printf("invalid argument count"));
+		return (printf("invalid argument count")); // send error to stderr
 	if (parse_input(input, argc, argv) == 1)
 	{
 		printf("parsing got fuuuucked\n");
 	}
 	if (input->num_of_philos <= 0)
 	{
-		printf("too few philos tf\n");
+		printf("too few philos tf\n"); //  send to stderr
 	}
 	return (0);
 }
-
-

@@ -6,7 +6,7 @@
 #    By: yasamankarimi <yasamankarimi@student.co      +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/07/30 11:39:41 by yasamankari   #+#    #+#                  #
-#    Updated: 2024/07/30 11:42:18 by yasamankari   ########   odam.nl          #
+#    Updated: 2024/07/30 11:55:52 by yasamankari   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,13 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(OBJS) 
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
 
 clean:
 	rm -rf $(BUILD_DIR)
 
 fclean: clean
 	rm -f $(NAME).a
-	
 
 re: fclean all
 
