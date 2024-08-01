@@ -10,15 +10,18 @@ int	main(int argc, char *argv[])
 		printf("parsing func failed\n");
 		return (1);
 	}
-	if (philo_init(info) == 1)
+	if (init(&info) == 1)
 	{
 		printf("init func failed\n");
-		return (exit_cleanup(&info, 1));;
+		return 1;
+		//return (exit_cleanup(&info, 1));;
 	}
-	if (start_sim(info) == 1)
+	if (sim(&info) == 1)
 	{
 		printf("sim funct failed\n");
-		return (exit_cleanup(&info, 1));
+		return 1;
+		//return (exit_cleanup(&info, 1));
 	}
-	return (exit_cleanup(&info, 0));
+	//return (exit_cleanup(&info, 0));
+	return 0;
 }

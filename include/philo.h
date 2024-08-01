@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#include <ctype.h>
 
 /******************************************************************************/
 /* Macros */
@@ -20,6 +21,8 @@
 
 /******************************************************************************/
 /* Data Structures */
+
+typedef struct s_info	t_info;
 typedef enum
 {
 					TAKEN_FORK,
@@ -30,22 +33,22 @@ typedef enum
 					NUM_MESSAGES
 }					msg_type;
 
-const char *messages[NUM_MESSAGES] =
-{
-					"%d %d has taken a fork.",
-					"%d %d is eating.",
-					"%d %d is sleeping",
-					"%d %d is thinking.",
-					"%d %d died."
-};
+// extern const char *messages[NUM_MESSAGES] =
+// {
+// 					"%d %d has taken a fork.",
+// 					"%d %d is eating.",
+// 					"%d %d is sleeping",
+// 					"%d %d is thinking.",
+// 					"%d %d died."
+// };
 
 enum philo_states
 {
 					ALIVE,
-					EATING,
-					THINKING,
-					SLEEPING,
-					HUNGRY,
+					// EATING,
+					// THINKING,
+					// SLEEPING,
+					// HUNGRY,
 					DEAD,
 					INACTIVE,
 };
@@ -54,10 +57,11 @@ typedef struct s_philo
 {
 	int					id;
 	pthread_t			thread;
-	int					last_meal_time;
+	struct timeval		last_meal_time;
 	int					num_meals;
 	enum philo_states	state;
 	t_info				*info;
+	bool				dead;
 }						t_philo;
 
 typedef struct s_queue
@@ -96,7 +100,6 @@ typedef struct s_info
 	t_monitor			*monitor;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*write_lock;
-	bool				sim_on;
 	struct timeval		start;
 }						t_info;
 
@@ -117,22 +120,22 @@ int				create_threads(t_info *info);
 int				wait_for_threads(t_info *info);
 void			*philo_life_cycle(void *arg);
 void			eat(t_philo *philo);
-void			sleep(t_philo *philo);
+void			philo_sleep(t_philo *philo);
 void			think(t_philo *philo);
 
 /* Monitor */
 void			*monitor(void	*arg);
 
 
-/* Queue functions */
-t_queue			*create_queue(t_queue *q, t_info *info);
-int				enqueue(t_queue *q, int philo_id);
-int				dequeue(t_queue *q, int philo_id);
-int				is_empty(t_queue* q);
-int				is_full(t_queue* q);
-int				front(t_queue *q);
-int				back(t_queue *q);
-void			free_queue(t_queue *q);
+// /* Queue functions */
+// t_queue			*create_queue(t_queue *q, t_info *info);
+// int				enqueue(t_queue *q, int philo_id);
+// int				dequeue(t_queue *q, int philo_id);
+// int				is_empty(t_queue* q);
+// int				is_full(t_queue* q);
+// int				front(t_queue *q);
+// int				back(t_queue *q);
+// void			free_queue(t_queue *q);
 
 
 /* Utility Functions */
@@ -151,5 +154,8 @@ void			log_message(t_philo *philo, msg_type msgtype);
 /* Time keeping functions */
 struct timeval	get_current_time();
 long			calculate_elapsed_time(struct timeval start, struct timeval end);
+
+int	right_index(t_philo *philo);
+
 
 #endif

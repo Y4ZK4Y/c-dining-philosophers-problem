@@ -12,8 +12,9 @@ int	init_philos(t_info *info)
 	{
 		info->philos[i].id = i + 1;
 		info->philos[i].info = info;
-		info->philos[i].last_meal_time = 0;
+		// info->philos[i].last_meal_time = 0;
 		info->philos[i].state = INACTIVE;
+		info->philos->dead = false;
 		info->philos->thread = malloc(1 * sizeof(pthread_t));
 		if (info->philos->thread == NULL)
 		{
@@ -42,7 +43,7 @@ int	init_mutexes(t_info *info)
 		}
 		i++;
 	}
-	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
+	if (pthread_mutex_init(info->write_lock, NULL) != 0)
 	{
 		printf("log mutex fugged\n");
 		return 1;
@@ -59,14 +60,16 @@ int	init_monitor(t_info *info)
 		printf("malloc for monitor in philo init dedd\n");
 		return 1;
 	}
+	if (pthread_create(&info->monitor->thread, NULL, monitor, &info->philos) != 0)
+	{
+		printf("creating monitor thread got fucked\n"); // handle errors
+		return 1;
+	}
 	if (pthread_mutex_init(&info->monitor->turn_lock, NULL) != 0)
 	{
 		printf("monitor mutex got fucekd\n");
 		return 1;
 	}
-	//info->monitor->queue = malloc(sizeof(t_philo *) * capacity);
-	//info->monitor->queue_size = 0;
-	//info->monitor->queue_capacity = capacity;
 	return 0;
 }
 
@@ -84,16 +87,11 @@ int	init(t_info *info)
 		printf("init philos got fucked\n");
 		return 1;
 	}
-	if (init_monitor(info) == 1)
-	{
-		printf("init monitor got fugged\n");
-		return 1;
-	}
-	if (init_mutexes(&info) == 1)
+	
+	if (init_mutexes(info) == 1)
 	{
 		printf("init forks got fugged\n");
 		return 1;
 	}
-	info->sim_on = false;
 	return 0;
 }

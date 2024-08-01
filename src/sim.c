@@ -7,6 +7,7 @@ int	wait_for_threads(t_info *info)
 
 	i = 0;
 	philo_count = info->input.num_of_philos;
+
 	while (i < philo_count)
 	{
 		if (pthread_join(info->philos[i].thread, NULL) != 0)
@@ -26,6 +27,7 @@ int	create_threads(t_info *info)
 
 	i = 0;
 	philo_count = info->input.num_of_philos;
+	
 	while (i < philo_count)
 	{
 		info->philos[i].state = ALIVE;
@@ -37,7 +39,6 @@ int	create_threads(t_info *info)
 		usleep(100);
 		i++;
 	}
-	info->sim_on = true;
 	info->start = get_current_time();
 	return 0;
 }

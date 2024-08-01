@@ -1,57 +1,85 @@
 #include "philo.h"
 
+int	right_index(t_philo *philo)
+{
+	int	index;
+
+	index = philo->id;
+	if (philo->id == philo->info->input.num_of_philos)
+		index = 0;
+	return (index);
+}
+
 
 int	pickup_forks(t_philo *philo)
 {
-	log_message();
+	int	fork_index[2];
 
+	fork_index[0] = philo->id - 1;
+	fork_index[1] = right_index(philo);
+	// check to see both forks are available to pick up(left then right)
+	// if not, wait, change status to hungry
+	// if forks available
+	// lock forks
+	log_message(philo, TAKEN_FORK);
+	return 0;
 }
-int	put_down_forks(t_philo *philo)
-{
+// int	put_down_forks(t_philo *philo)
+// {
+// 	//unlock forks
 
-}
+// }
 void	think(t_philo *philo)
 {
 	log_message(philo, THINKING);
 }
 
-void sleep(t_philo *philo)
+void philo_sleep(t_philo *philo)
 {
-	log(philo, SLEEPING);
+	// set status to sleeping
+	log_message(philo, SLEEPING);
 	usleep(philo->info->input.time_to_sleep * 1000);
 }
 
-
-
 void	eat(t_philo *philo)
 {
+	// set status to eating
 	log_message(philo, EATING);
 	philo->last_meal_time = get_current_time();
 	philo->num_meals++;
 	usleep(philo->info->input.time_to_eat * 1000);
 }
 
-single_philo()
-{
+// single_philo()
+// {
 
-}
+// }
 
 void	*philo_life_cycle(void *arg)
 {
 	t_philo	*philo;
 
 	philo = arg;
-	while (philo->info->sim_on)
+	if (init_monitor(philo->info) == 1)
+	{
+		printf("init monitor got fugged\n");
+		
+	}
+	while (philo->dead == false)
 	{
 		think(philo);
-		request_permission_to_eat(philo);
 		pickup_forks(philo);
 		eat(philo);
-		put_down_forks(philo);
-		sleep(philo);
-		uspleep(1000);
+		//put_down_forks(philo);
+		philo_sleep(philo);
+		usleep(1000);
 	}
-	pthread_join(monitor, NULL);
+
+	if (pthread_join(philo->info->monitor->thread, NULL) != 0)
+	{
+		printf("pthread create got fucked\n");
+		
+	}
 
 	return (NULL);
 }

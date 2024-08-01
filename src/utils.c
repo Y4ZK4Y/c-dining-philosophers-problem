@@ -35,11 +35,11 @@ static long	parse_number(const char **str, int base, \
 	int				digit;
 
 	result = 0;
-	while (ft_isalnum(**str))
+	while (isalnum(**str))
 	{
-		if (ft_isdigit(**str))
+		if (isdigit(**str))
 			digit = **str - '0';
-		else if (ft_isupper(**str))
+		else if (isupper(**str))
 			digit = **str - 'A' + 10;
 		else
 			digit = **str - 'a' + 10;
@@ -61,7 +61,7 @@ long	ft_strtol(const char *str, char **endptr, int base)
 	int	is_negative;
 
 	is_negative = 0;
-	while (ft_isspace(*str))
+	while (isspace(*str))
 		str++;
 	if (*str == '-' || *str == '+')
 	{
