@@ -7,7 +7,7 @@ int	init_philos(t_info *info)
 
 	i = 0;
 	philo_count = info->input.num_of_philos;
-	ft_bzero(&info->philos, sizeof(t_philo));
+	//ft_bzero(&info->philos, sizeof(t_philo));
 	while (i < philo_count)
 	{
 		info->philos[i].id = i + 1;
@@ -34,6 +34,13 @@ int	init_mutexes(t_info *info)
 
 	i = 0;
 	philo_count = info->input.num_of_philos;
+
+	info->forks = malloc(philo_count * sizeof(pthread_mutex_t));
+    if (info->forks == NULL)
+    {
+        printf("Failed to allocate memory for forks\n");
+        return 1;
+    }
 	while (i < philo_count)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
@@ -43,6 +50,12 @@ int	init_mutexes(t_info *info)
 		}
 		i++;
 	}
+	info->write_lock = malloc(sizeof(pthread_mutex_t));
+    if (info->write_lock == NULL)
+    {
+        printf("Failed to allocate memory for write_lock\n");
+        return 1;
+    }
 	if (pthread_mutex_init(info->write_lock, NULL) != 0)
 	{
 		printf("log mutex fugged\n");
@@ -53,7 +66,13 @@ int	init_mutexes(t_info *info)
 
 int	init_monitor(t_info *info)
 {
-	ft_bzero(&info->monitor, sizeof(t_monitor));
+
+	info->monitor = malloc(sizeof(*(info->monitor)));
+    if (info->monitor == NULL) {
+        printf("malloc for monitor failed\n");
+        return 1;
+    }
+	//ft_bzero(&info->monitor, sizeof(t_monitor));
 	info->monitor->thread= malloc(1 * sizeof(pthread_t));
 	if (info->monitor->thread == NULL)
 	{

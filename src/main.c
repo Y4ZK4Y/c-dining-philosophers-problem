@@ -4,7 +4,7 @@ int	main(int argc, char *argv[])
 {
 	t_info	info;
 
-	ft_bzero(&info, sizeof(t_info));
+	memset(&info, 0, sizeof(t_info));
 	if (get_input(&info.input, argc, argv) == 1)
 	{
 		printf("parsing func failed\n");

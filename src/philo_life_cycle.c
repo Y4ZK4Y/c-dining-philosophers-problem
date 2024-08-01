@@ -75,7 +75,7 @@ void	*philo_life_cycle(void *arg)
 		usleep(1000);
 	}
 
-	if (pthread_join(*philo->info->monitor->thread, NULL) != 0)
+	if (pthread_join(philo->info->monitor->thread, NULL) != 0)
 	{
 		printf("pthread create got fucked\n");
 		
