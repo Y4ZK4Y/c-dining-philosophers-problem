@@ -20,7 +20,7 @@ int	parse_input(t_input *input, int argc, char *argv[])
 			return 1;
 		}
 		input_array[i - 1] = num;
-		printf("arg[%d]: %d (converted to %ld)\n", i, input_array[i - 1], num);
+		//printf("arg[%d]: %d (converted to %ld)\n", i, input_array[i - 1], num);
 	}
 	input->num_of_philos = input_array[0];
 	input->time_to_die = input_array[1];

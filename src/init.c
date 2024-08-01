@@ -1,61 +1,44 @@
 #include "philo.h"
 
-int	init_philos(t_info *info)
+void	init_philos(t_info *info)
 {
 	int	i;
-	int	philo_count;
 
 	i = 0;
-	philo_count = info->input.num_of_philos;
-	//ft_bzero(&info->philos, sizeof(t_philo));
-	while (i < philo_count)
+	while (i < info->input.num_of_philos)
 	{
 		info->philos[i].id = i + 1;
 		info->philos[i].info = info;
-		// info->philos[i].last_meal_time = 0;
-		info->philos[i].state = INACTIVE;
-		info->philos->dead = false;
-		// info->philos->thread = malloc(1 * sizeof(pthread_t));
-		// if (info->philos->thread == NULL)
-		// {
-		// 	printf("malloc for threads in philo init failed\n");
-		// 	return 1;
-		// }
+		info->philos[i].last_meal_time = 0;
+		// info->philos[i].left_fork = &(info->forks[i]);
+		// info->philos[i].right_fork = &(info->forks[(i+1)% info->input.num_of_philos]);
+		info->philos[i].philo_state = INACTIVE;
 		i++;
 	}
-	return (0);
 }
-
 
 int	init_mutexes(t_info *info)
 {
 	int	i;
-	int	philo_count;
 
 	i = 0;
-	philo_count = info->input.num_of_philos;
-
-	info->forks = malloc(philo_count * sizeof(pthread_mutex_t));
-    if (info->forks == NULL)
-    {
-        printf("Failed to allocate memory for forks\n");
-        return 1;
-    }
-	while (i < philo_count)
+	info->forks = ft_malloc(info->input.num_of_philos * sizeof(pthread_mutex_t));
+	
+	while (i < info->input.num_of_philos)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
 		{
 			printf("mutex got fucekd\n");
 			return 1;
 		}
+		if (thread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
+		{
+			printf("mutex got fucekd\n");
+			return 1;
+		}
+		info->forks[i].index = 0;
 		i++;
 	}
-	// info->write_lock = malloc(sizeof(pthread_mutex_t));
-    // if (info->write_lock == NULL)
-    // {
-    //     printf("Failed to allocate memory for write_lock\n");
-    //     return 1;
-    // }
 	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
 	{
 		printf("log mutex fugged\n");
@@ -64,54 +47,19 @@ int	init_mutexes(t_info *info)
 	return 0;
 }
 
-int	init_monitor(t_info *info)
-{
-
-	info->monitor = malloc(sizeof(*(info->monitor)));
-    if (info->monitor == NULL)
-	{
-        printf("malloc for monitor failed\n");
-        return 1;
-    }
-	//ft_bzero(&info->monitor, sizeof(t_monitor));
-	// info->monitor->thread= malloc(1 * sizeof(pthread_t));
-	// if (info->monitor->thread == NULL)
-	// {
-	// 	printf("malloc for monitor in philo init dedd\n");
-	// 	return 1;
-	// }
-	if (pthread_create(&info->monitor->thread, NULL, monitor, &info->philos) != 0)
-	{
-		printf("creating monitor thread got fucked\n"); // handle errors
-		return 1;
-	}
-	if (pthread_mutex_init(&info->monitor->turn_lock, NULL) != 0)
-	{
-		printf("monitor mutex got fucekd\n");
-		return 1;
-	}
-	return 0;
-}
-
 
 int	init(t_info *info)
 {
-	info->philos = malloc(info->input.num_of_philos * sizeof(t_philo));
-	if (info->philos == NULL)
-	{
-		printf("philo init went rouge\n");
-		return 1;
-	}
-	if (init_philos(info) == 1)
-	{
-		printf("init philos got fucked\n");
-		return 1;
-	}
-	
+	info->philos = ft_malloc(info->input.num_of_philos * sizeof(t_philo));
+	init_philos(info);
 	if (init_mutexes(info) == 1)
-	{
-		printf("init forks got fugged\n");
-		return 1;
-	}
+		error_exit("init forks got fugged", 1);
+
+	if (create_threads(info) == 1)
+		error_exit("create philos func faield", 1);
+	
+	if (wait_for_threads(info) == 1)
+		error_exit("wait func faield", 1);
+
 	return 0;
 }

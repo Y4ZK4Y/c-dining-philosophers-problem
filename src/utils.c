@@ -72,3 +72,20 @@ long	ft_strtol(const char *str, char **endptr, int base)
 		return (0);
 	return (parse_number(&str, base, is_negative, endptr));
 }
+
+
+
+void	error_exit(const char *errmsg, int exit_status)
+{
+	printf("%s", errmsg);
+	exit(exit_status);
+}
+
+void	*ft_malloc(size_t bytes)
+{
+	void	*result;
+	result = malloc(bytes);
+	if (result = NULL)
+		error_exit("Error: Malloc failed.\n", 1);
+	return (result);
+}

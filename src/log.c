@@ -14,12 +14,8 @@ void	log_message(t_philo *philo, msg_type msgtype)
 	};
 
 	current_time = get_current_time();
-    current_time_ms = calculate_elapsed_time(philo->info->start, current_time);	pthread_mutex_lock(&philo->info->write_lock); // error check
+    current_time_ms = calculate_elapsed_time(philo->info->start, current_time);
+	pthread_mutex_lock(&philo->info->write_lock); // error check
 	printf(messages[msgtype], current_time_ms, philo->id);
 	pthread_mutex_unlock(&philo->info->write_lock);
 }
-
-// void	log_destroy()
-// {
-// 	pthread_mutex_destroy(logs->write_lock); // error check
-// }

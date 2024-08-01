@@ -3,12 +3,9 @@
 int	wait_for_threads(t_info *info)
 {
 	int	i;
-	int	philo_count;
 
 	i = 0;
-	philo_count = info->input.num_of_philos;
-
-	while (i < philo_count)
+	while (i < info->input.num_of_philos)
 	{
 		if (pthread_join(info->philos[i].thread, NULL) != 0)
 		{
@@ -17,21 +14,22 @@ int	wait_for_threads(t_info *info)
 		}
 		i++;
 	}
+	if (pthread_join(info->monitor, NULL) != 0)
+	{
+		printf("pthread create got fucked\n");
+	}
 	return 0;
 }
 
 int	create_threads(t_info *info)
 {
 	int	i;
-	int	philo_count;
 
 	i = 0;
-	philo_count = info->input.num_of_philos;
-	
-	while (i < philo_count)
+	while (i < info->input.num_of_philos)
 	{
-		info->philos[i].state = ALIVE;
-		if (pthread_create(&info->philos[i].thread, NULL, philo_life_cycle, &info->philos[i]) != 0)
+		info->philos[i].philo_state = THINKING;
+		if (pthread_create(info->philos[i].thread, NULL, philo_life_cycle, &info->philos[i]) != 0)
 		{
 			printf("creating threads got fucked\n"); // handle errors
 			return 1;
@@ -39,21 +37,11 @@ int	create_threads(t_info *info)
 		usleep(100);
 		i++;
 	}
-	info->start = get_current_time();
-	return 0;
-}
-
-int	sim(t_info *info)
-{
-	if (create_threads(info) == 1)
+	if (pthread_create(&info->monitor, NULL, monitor, &info) != 0)
 	{
-		printf("create philos func faield\n");
+		printf("creating monitor thread got fucked\n"); // handle errors
 		return 1;
 	}
-	if (wait_for_threads(info) == 1)
-	{
-		printf("wait func faield\n");
-		return 1;
-	}
+	//info->start_time = get_current_time();
 	return 0;
 }
