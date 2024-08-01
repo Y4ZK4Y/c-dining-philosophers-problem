@@ -60,7 +60,7 @@ int	init_monitor(t_info *info)
 		printf("malloc for monitor in philo init dedd\n");
 		return 1;
 	}
-	if (pthread_create(&info->monitor->thread, NULL, monitor, &info->philos) != 0)
+	if (pthread_create(info->monitor->thread, NULL, monitor, &info->philos) != 0)
 	{
 		printf("creating monitor thread got fucked\n"); // handle errors
 		return 1;

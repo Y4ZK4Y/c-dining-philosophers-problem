@@ -10,7 +10,7 @@ int	wait_for_threads(t_info *info)
 
 	while (i < philo_count)
 	{
-		if (pthread_join(info->philos[i].thread, NULL) != 0)
+		if (pthread_join(*info->philos[i].thread, NULL) != 0)
 		{
 			printf("pthread create got fucked\n");
 			return 1;
@@ -31,7 +31,7 @@ int	create_threads(t_info *info)
 	while (i < philo_count)
 	{
 		info->philos[i].state = ALIVE;
-		if (pthread_create(&info->philos[i].thread, NULL, philo_life_cycle, &info->philos[i]) != 0)
+		if (pthread_create(info->philos[i].thread, NULL, philo_life_cycle, &info->philos[i]) != 0)
 		{
 			printf("creating threads got fucked\n"); // handle errors
 			return 1;

@@ -56,7 +56,7 @@ enum philo_states
 typedef struct s_philo
 {
 	int					id;
-	pthread_t			thread;
+	pthread_t			*thread;
 	struct timeval		last_meal_time;
 	int					num_meals;
 	enum philo_states	state;
@@ -75,7 +75,7 @@ typedef struct s_queue
 
 typedef struct s_monitor
 {
-	pthread_t			thread;
+	pthread_t			*thread;
 	pthread_mutex_t		turn_lock;
 	t_queue				*queue;
 	bool				stop;
