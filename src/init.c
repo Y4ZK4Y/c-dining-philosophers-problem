@@ -15,12 +15,12 @@ int	init_philos(t_info *info)
 		// info->philos[i].last_meal_time = 0;
 		info->philos[i].state = INACTIVE;
 		info->philos->dead = false;
-		info->philos->thread = malloc(1 * sizeof(pthread_t));
-		if (info->philos->thread == NULL)
-		{
-			printf("malloc for threads in philo init failed\n");
-			return 1;
-		}
+		// info->philos->thread = malloc(1 * sizeof(pthread_t));
+		// if (info->philos->thread == NULL)
+		// {
+		// 	printf("malloc for threads in philo init failed\n");
+		// 	return 1;
+		// }
 		i++;
 	}
 	return (0);
@@ -50,13 +50,13 @@ int	init_mutexes(t_info *info)
 		}
 		i++;
 	}
-	info->write_lock = malloc(sizeof(pthread_mutex_t));
-    if (info->write_lock == NULL)
-    {
-        printf("Failed to allocate memory for write_lock\n");
-        return 1;
-    }
-	if (pthread_mutex_init(info->write_lock, NULL) != 0)
+	// info->write_lock = malloc(sizeof(pthread_mutex_t));
+    // if (info->write_lock == NULL)
+    // {
+    //     printf("Failed to allocate memory for write_lock\n");
+    //     return 1;
+    // }
+	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
 	{
 		printf("log mutex fugged\n");
 		return 1;
@@ -68,18 +68,19 @@ int	init_monitor(t_info *info)
 {
 
 	info->monitor = malloc(sizeof(*(info->monitor)));
-    if (info->monitor == NULL) {
+    if (info->monitor == NULL)
+	{
         printf("malloc for monitor failed\n");
         return 1;
     }
 	//ft_bzero(&info->monitor, sizeof(t_monitor));
-	info->monitor->thread= malloc(1 * sizeof(pthread_t));
-	if (info->monitor->thread == NULL)
-	{
-		printf("malloc for monitor in philo init dedd\n");
-		return 1;
-	}
-	if (pthread_create(info->monitor->thread, NULL, monitor, &info->philos) != 0)
+	// info->monitor->thread= malloc(1 * sizeof(pthread_t));
+	// if (info->monitor->thread == NULL)
+	// {
+	// 	printf("malloc for monitor in philo init dedd\n");
+	// 	return 1;
+	// }
+	if (pthread_create(&info->monitor->thread, NULL, monitor, &info->philos) != 0)
 	{
 		printf("creating monitor thread got fucked\n"); // handle errors
 		return 1;

@@ -6,11 +6,11 @@ void	log_message(t_philo *philo, msg_type msgtype)
 	struct timeval current_time;
 	const char *messages[NUM_MESSAGES] =
 	{
-		"%d %d has taken a fork.",
-		"%d %d is eating.",
-		"%d %d is sleeping",
-		"%d %d is thinking.",
-		"%d %d died."
+		"%ld %d has taken a fork.",
+		"%ld %d is eating.",
+		"%ld %d is sleeping",
+		"%ld %d is thinking.",
+		"%ld %d died."
 	};
 
 	current_time = get_current_time();
