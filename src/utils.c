@@ -1,91 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parsing_utils.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/08/03 20:45:02 by yasamankari   #+#    #+#                 */
+/*   Updated: 2024/08/03 20:54:43 by yasamankari   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-static int	check_and_adjust_base(const char **str, char **endptr, int *base)
+int	ft_isdigit(int c)
 {
-	if (*base < 0 || *base == 1 || *base > 36)
-	{
-		if (endptr)
-			*endptr = (char *)*str;
-		errno = EINVAL;
-		return (-1);
-	}
-	if (*base == 0)
-	{
-		if (**str == '0')
-		{
-			(*str)++;
-			if (**str == 'x' || **str == 'X')
-			{
-				*base = 16;
-				(*str)++;
-			}
-			else
-				*base = 8;
-		}
-		else
-			*base = 10;
-	}
-	return (0);
+	return (c >= '0' && c <= '9');
 }
 
-static long	parse_number(const char **str, int base, \
-						int is_negative, char **endptr)
+static int	ft_isalpha(int c)
 {
-	unsigned long	result;
-	int				digit;
-
-	result = 0;
-	while (isalnum(**str))
-	{
-		if (isdigit(**str))
-			digit = **str - '0';
-		else if (isupper(**str))
-			digit = **str - 'A' + 10;
-		else
-			digit = **str - 'a' + 10;
-		if (digit >= base)
-			break ;
-		result = result * base + digit;
-		(*str)++;
-	}
-	if (endptr)
-		*endptr = (char *)*str;
-	if (is_negative)
-		return (-(long)result);
-	else
-		return ((long)result);
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
 
-long	ft_strtol(const char *str, char **endptr, int base)
+int	ft_isalnum(int c)
 {
-	int	is_negative;
-
-	is_negative = 0;
-	while (isspace(*str))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		is_negative = (*str == '-');
-		str++;
-	}
-	if (check_and_adjust_base(&str, endptr, &base) == -1)
-		return (0);
-	return (parse_number(&str, base, is_negative, endptr));
+	return (ft_isalpha(c) || ft_isdigit(c));
 }
 
-
-
-void	error_exit(const char *errmsg, int exit_status)
+size_t	ft_strlen(char *s)
 {
-	printf("%s", errmsg);
-	exit(exit_status);
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
-void	*ft_malloc(size_t bytes)
+void	*ft_malloc(size_t bytes, t_info *info)
 {
 	void	*result;
+
 	result = malloc(bytes);
-	if (result = NULL)
-		error_exit("Error: Malloc failed.\n", 1);
+	if (result == NULL)
+		error_exit("Malloc failed.", ERROR, info, 1);
 	return (result);
 }

@@ -1,19 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   monitor.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/08/03 20:27:46 by yasamankari   #+#    #+#                 */
+/*   Updated: 2024/08/03 20:28:41 by yasamankari   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	*monitor(void *arg)
 {
-	t_info *info;
-	info = arg;
-	struct timeval current_time;
+	t_philo	*philo;
 
-	while (1)
+	philo = arg;
+	while (philo->info->end == false)
 	{
-		pthread_mutex_lock(&info->turn_lock);
-		gettimeofday(&current_time, NULL);
-		if (calculate_elapsed_time(philo->last_meal_time, current_time) >= philo->info->input.time_to_die)
-			log_message(philo, DIED);
-		pthread_mutex_unlock(&philo->info->monitor->turn_lock);
+		if (philo->philo_state == INACTIVE)
+			break ;
+		//pthread_mutex_lock(&philo->info->turn_lock);
+		if (calculate_elapsed_time(philo->last_meal_time) >= \
+		philo->info->input.time_to_die)
+		{
+			philo->philo_state = DEAD;
+			log_message(philo, philo->philo_state);
+			philo->info->end = true;
+		}
+		//pthread_mutex_unlock(&philo->info->monitor->turn_lock);
 		usleep(1000);
 	}
-	return NULL;
+	return (NULL);
 }

@@ -4,8 +4,29 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-
-
+        {
+            "name": "Debug with LLDB",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/philo", // Path to your executable
+            "args": ["5", "800", "800", "800"], // Command-line arguments
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build", // Ensure you have a corresponding task in tasks.json
+            "miDebuggerPath": "/usr/local/opt/llvm/bin/lldb", // Path to Homebrew LLVM LLDB
+            "logging": {
+                "engineLogging": true
+            }
+        }
     ]
 }

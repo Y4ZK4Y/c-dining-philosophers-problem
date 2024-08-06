@@ -1,77 +1,67 @@
-#ifndef PHILO_H
-#define PHILO_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   philo.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
+/*   Updated: 2024/08/03 21:01:06 by yasamankari   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <sys/time.h>
-#include <string.h>
-#include <errno.h>
-#include <limits.h>
-#include <string.h>
-#include <ctype.h>
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <pthread.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <sys/time.h>
+# include <string.h>
+# include <errno.h>
+# include <limits.h>
 
 /******************************************************************************/
 /* Macros */
 
-
-
-
+# define ERROR -1
+# define NVM 909
+# define FINE 0
 /******************************************************************************/
 /* Data Structures */
 
 typedef struct s_info	t_info;
-typedef enum
-{
-					TAKEN_FORK,
-					EATING,
-					SLEEPING,
-					THINKING,
-					DEAD,
-					HUNGRY,
-					INACTIVE,
-					ACTIVE,
-					NUM_MESSAGES
-}					msg_type;
 
-
-enum philo_states
+enum e_philo_states
 {
-					//ALIVE,
-					THINKING,
-					EATING,
-					SLEEPING,
-					DEAD,
-					//HUNGRY,
-					//INACTIVE,
+	TAKEN_FORK,
+	EATING,
+	SLEEPING,
+	THINKING,
+	DEAD,
+	INACTIVE,
+	ACTIVE,
 };
-
-typedef struct t_fork
-{
-	int				index;
-	pthread_mutex_t	fork;
-}					t_fork;
-
 
 typedef struct s_philo
 {
 	int					id;
 	pthread_t			thread;
-	long				last_meal_time;
-	enum philo_states	philo_state;
+	struct timeval		last_meal_time;
+	enum e_philo_states	philo_state;
 	t_info				*info;
-	// t_fork				*left_fork;
-	// t_fork				*right_fork;
 	pthread_mutex_t		state_mutex;
+	int					left_fork_index;
+	int					right_fork_index;
 }						t_philo;
 
 /* Commandline arguments the program receives */
 typedef struct s_input
 {
 	int					num_of_philos;
-	int					time_to_die;
+	long				time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 }						t_input;
@@ -82,67 +72,55 @@ typedef struct s_info
 	t_input				input;
 	t_philo				*philos;
 	pthread_t			monitor;
-	t_fork				*forks;
+	pthread_mutex_t		*forks;
 	pthread_mutex_t		write_lock;
-	long				start_time;
-	bool				sim_end;
+	struct timeval		start_time;
+	bool				lets_fuckin_go;
+	bool				end;
 }						t_info;
 
 /******************************************************************************/
 /* Parsing */
-int				get_input(t_input *input, int argc, char *argv[]);
-int				parse_input(t_input *input, int argc, char *argv[]);
+void			get_input(t_input *input, int argc, char *argv[]);
+void			parse_input(t_input *input, int argc, char *argv[]);
 
 /* Initializing the program */
-int				init(t_info *info);
+void			init(t_info *info);
 void			init_philos(t_info *info);
-int				init_mutexes(t_info *info);
-//int				init_monitor(t_info *info);
+void			init_mutexes(t_info *info);
 
 /* Simulation */
-//int				sim(t_info *info);
-int				create_threads(t_info *info);
-int				wait_for_threads(t_info *info);
+void			create_threads(t_info *info);
+void			join_threads(t_info *info);
 void			*philo_life_cycle(void *arg);
 void			eat(t_philo *philo);
 void			philo_sleep(t_philo *philo);
 void			think(t_philo *philo);
+void			pickup_forks(t_philo *philo);
 
 /* Monitor */
 void			*monitor(void	*arg);
 
-
-// /* Queue functions */
-// t_queue			*create_queue(t_queue *q, t_info *info);
-// int				enqueue(t_queue *q, int philo_id);
-// int				dequeue(t_queue *q, int philo_id);
-// int				is_empty(t_queue* q);
-// int				is_full(t_queue* q);
-// int				front(t_queue *q);
-// int				back(t_queue *q);
-// void			free_queue(t_queue *q);
-
-
 /* Utility Functions */
-void			ft_bzero(void *s, size_t n);
 size_t			ft_strlen(char *s);
-void			ft_putstr_fd(char *s, int fd);
 long			ft_strtol(const char *str, char **endptr, int base);
-
+int				ft_isalnum(int c);
+int				ft_isdigit(int c);
 
 /* Log */
-void			log_message(t_philo *philo, msg_type msgtype);
-
+void			log_message(t_philo *philo, enum e_philo_states philo_state);
 
 /* Time keeping functions */
-struct timeval	get_current_time();
-long			calculate_elapsed_time(struct timeval start, struct timeval end);
+struct timeval	get_current_time(void);
+long			calculate_elapsed_time(struct timeval start);
+void			ft_usleep(long time, t_philo *philo);
 
-//int	right_index(t_philo *philo);
-bool	is_philo_dead(t_info *info, int philo_index);
-void	*ft_malloc(size_t bytes);
-void	error_exit(const char *errmsg, int exit_status);
+/* Wrapper functions */
+void			*ft_malloc(size_t bytes, t_info *info);
 
+/* Error Handling */
 
+void			error_exit(char *errmsg, int exit_status, \
+				t_info *info, int mutex);
 
 #endif

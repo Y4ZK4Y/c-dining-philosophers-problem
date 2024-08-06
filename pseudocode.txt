@@ -545,3 +545,68 @@ signal(mutex); / /exit critical
 // }
 
 
+TODO: make wrapper functions
+for pthread api functions, malloc, 
+
+
+
+init
+malloc forks, philos
+
+
+use static functions  more often
+
+avoid fork deadlock situation
+dijkstra
+odd even
+think about the wors case and best case and stuff
+
+think about fairness
+
+no cycle, no deadlock
+think about fork assignment
+
+think about different input scebarios and what will happen
+
+
+
+if no meal
+    return
+if one philo
+    single philo function
+create threads
+creat emonitor thread
+synch sim
+join threads
+
+
+setters and getter sin c code
+spinlock ?
+
+
+
+// static void assign_forks(t_philo *philo, t_fork *forks, int philo_pos)
+// {
+// 	if (philo->id % 2)
+// 	{
+// 		philos[i].fork = &(philo->forks[philo_pos]);
+// 		philos[i].fork_plus = &(philo->forks[philo_pos + 1] % philo_nuum);
+// 	}
+// 	philos[i].left_fork = &(info->forks[i]);
+// 	philos[i].right_fork = &(info->forks[(i+1)% info->input.num_of_philos]);
+
+// }
+
+
+if it's the last philo, right fork is index 0
+otehrwise its the philo id
+left fork is id -1
+
+	// int	fork_index[2];
+
+	// fork_index[0] = philo->id - 1;
+	// fork_index[1] = right_index(philo);
+	// check to see both forks are available to pick up(left then right)
+	// if not, wait, change status to hungry
+	// if forks available
+	// lock forks

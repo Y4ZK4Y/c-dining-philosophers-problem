@@ -1,11 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   log.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/08/03 20:24:38 by yasamankari   #+#    #+#                 */
+/*   Updated: 2024/08/03 20:39:40 by yasamankari   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void	log_message(t_philo *philo, msg_type msgtype)
+void	log_message(t_philo *philo, enum e_philo_states philo_state)
 {
-	long	current_time_ms;
-	struct timeval current_time;
-	const char *messages[NUM_MESSAGES] =
-	{
+	long				elapsed_time;
+	static const char	*messages[] = {
 		"timestamp:%ld, philo %d has taken a fork.\n",
 		"timestamp:%ld, philo %d is eating.\n",
 		"timestamp:%ld, philo %d is sleeping.\n",
@@ -13,9 +23,13 @@ void	log_message(t_philo *philo, msg_type msgtype)
 		"timestamp:%ld, philo %d died.\n"
 	};
 
-	current_time = get_current_time();
-    current_time_ms = calculate_elapsed_time(philo->info->start, current_time);
+	elapsed_time = calculate_elapsed_time(philo->info->start_time);
 	pthread_mutex_lock(&philo->info->write_lock); // error check
-	printf(messages[msgtype], current_time_ms, philo->id);
+	if (philo->info->end == false)
+	{
+		printf(messages[philo_state], elapsed_time, philo->id);
+		if (philo_state == DEAD)
+			philo->info->end = true;
+	}
 	pthread_mutex_unlock(&philo->info->write_lock);
 }

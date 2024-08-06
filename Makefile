@@ -6,13 +6,13 @@
 #    By: yasamankarimi <yasamankarimi@student.co      +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/07/30 11:39:41 by yasamankari   #+#    #+#                  #
-#    Updated: 2024/08/01 14:23:37 by ykarimi       ########   odam.nl          #
+#    Updated: 2024/08/03 20:19:59 by yasamankari   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
 INCLUDES := -I./include
 BUILD_DIR := bin
 SRC_DIR := src
