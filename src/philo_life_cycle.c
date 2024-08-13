@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:28:52 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 21:01:44 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/13 10:24:51 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	pickup_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state_mutex);
+	//pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = EATING;
 	philo->last_meal_time = get_current_time();
 	philo->philo_state = EATING;
 	log_message(philo, philo->philo_state);
 	ft_usleep(philo->info->input.time_to_eat, philo);
-	pthread_mutex_unlock(&philo->state_mutex);
+	//pthread_mutex_unlock(&philo->state_mutex);
 	if (philo->id % 2)
 	{
 		pthread_mutex_unlock(&philo->info->forks \
@@ -64,19 +64,19 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state_mutex);
+	//pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = THINKING;
 	log_message(philo, philo->philo_state);
-	pthread_mutex_unlock(&philo->state_mutex);
+	//pthread_mutex_unlock(&philo->state_mutex);
 	usleep(1000);
 }
 
 void	philo_sleep(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state_mutex);
+	//pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = SLEEPING;
 	log_message(philo, philo->philo_state);
-	pthread_mutex_unlock(&philo->state_mutex);
+	//pthread_mutex_unlock(&philo->state_mutex);
 	ft_usleep(philo->info->input.time_to_sleep, philo);
 }
 
@@ -104,16 +104,16 @@ void	*philo_life_cycle(void *arg)
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	philo->last_meal_time = get_current_time();
-	if (pthread_create(&philo->info->monitor, NULL, monitor, philo) != 0)
-		error_exit("Creating threads failed.", ERROR, philo->info, 0);
+	// if (pthread_create(&philo->info->monitor, NULL, monitor, philo) != 0)
+	// 	error_exit("Creating threads failed.", ERROR, philo->info, 0);
 	while (1)
 	{
 		if ((philo->info->end) == true)
 		{
-			pthread_mutex_lock(&philo->state_mutex);
+			//pthread_mutex_lock(&philo->state_mutex);
 			philo->philo_state = DEAD;
 			log_message(philo, DEAD);
-			pthread_mutex_unlock(&philo->state_mutex);
+			//pthread_mutex_unlock(&philo->state_mutex);
 			break ;
 		}
 		pickup_forks(philo);
@@ -122,6 +122,6 @@ void	*philo_life_cycle(void *arg)
 		think(philo);
 	}
 	philo->philo_state = INACTIVE;
-	pthread_join(philo->info->monitor, NULL);
+	// pthread_join(philo->info->monitor, NULL);
 	return (NULL);
 }

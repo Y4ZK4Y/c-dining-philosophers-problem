@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:53:51 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/13 10:23:57 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	destroy_mutexes(t_info *info)
 	while (i < info->input.num_of_philos)
 	{
 		pthread_mutex_destroy(&info->forks[i]);
-		pthread_mutex_destroy(&info->philos[i].state_mutex);
+		//pthread_mutex_destroy(&info->philos[i].state_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&info->write_lock);
