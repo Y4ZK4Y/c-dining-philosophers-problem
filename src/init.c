@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:22:58 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/12 17:24:48 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	init_mutexes(t_info *info)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
 			error_exit("Initializing mutexes failed.", ERROR, info, 1);
-		if (pthread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
-			error_exit("Initializing mutexes failed.", ERROR, info, 1);
+		// if (pthread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
+		// 	error_exit("Initializing mutexes failed.", ERROR, info, 1);
 		i++;
 	}
 	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
