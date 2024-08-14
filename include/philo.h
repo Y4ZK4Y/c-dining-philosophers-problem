@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/13 10:33:52 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/14 10:23:48 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_info
 {
 	t_input				input;
 	t_philo				*philos;
-	//pthread_t			monitor;
+	pthread_t			monitor;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		write_lock;
 	struct timeval		start_time;
@@ -99,7 +99,7 @@ void			think(t_philo *philo);
 void			pickup_forks(t_philo *philo);
 
 /* Monitor */
-//void			*monitor(void	*arg);
+void			*monitor(void	*arg);
 
 /* Utility Functions */
 size_t			ft_strlen(char *s);

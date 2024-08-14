@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:26:43 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/13 10:34:06 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/14 10:23:24 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	join_threads(t_info *info)
 			error_exit("Joining threads failed.", ERROR, info, 0);
 		i++;
 	}
-	// if (pthread_join(info->monitor, NULL) != 0)
-	// 	error_exit("Creating threads failed.", ERROR, info, 0);
+	if (pthread_join(info->monitor, NULL) != 0)
+		error_exit("Creating threads failed.", ERROR, info, 0);
 }
 
 void	create_threads(t_info *info)
@@ -42,10 +42,10 @@ void	create_threads(t_info *info)
 		usleep(100);
 		i++;
 	}
-	// if (pthread_create(&info->monitor, NULL, monitor, info->philos) != 0)
-	// {
-	// 	error_exit("Creating threads failed.", ERROR, info, 0);
-	// }
+	if (pthread_create(&info->monitor, NULL, monitor, info->philos) != 0)
+	{
+		error_exit("Creating threads failed.", ERROR, info, 0);
+	}
 	info->start_time = get_current_time();
 	info->lets_fuckin_go = true;
 }
