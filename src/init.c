@@ -6,7 +6,11 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
+<<<<<<< Updated upstream
 /*   Updated: 2024/08/15 10:25:56 by ykarimi       ########   odam.nl         */
+=======
+/*   Updated: 2024/08/13 11:32:11 by ykarimi       ########   odam.nl         */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +29,7 @@ void	init_philos(t_info *info)
 		info->philos[i].info = info;
 		info->philos[i].left_fork_index = -1;
 		info->philos[i].right_fork_index = -1;
+		// assign forks here
 		i++;
 	}
 	info->end = false;
@@ -60,3 +65,4 @@ void	init(t_info *info)
 	sizeof(pthread_mutex_t), info);
 	init_mutexes(info);
 }
+// no exit()

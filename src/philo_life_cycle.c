@@ -6,11 +6,15 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:28:52 by yasamankari   #+#    #+#                 */
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 /*   Updated: 2024/08/13 10:24:51 by ykarimi       ########   odam.nl         */
 =======
 /*   Updated: 2024/08/12 17:23:43 by yasamankari   ########   odam.nl         */
 >>>>>>> e507436b114563853af6faf015a3bf49aea133d1
+=======
+/*   Updated: 2024/08/13 11:08:05 by ykarimi       ########   odam.nl         */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +107,7 @@ void	*philo_life_cycle(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
+	// set a lets_fuckin_go bolean (check it)
 	if (philo->info->input.num_of_philos == 1)
 		return (loner_philo(philo), NULL);
 	if (philo->id % 2 == 0)

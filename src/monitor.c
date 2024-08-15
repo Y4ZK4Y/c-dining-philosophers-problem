@@ -6,7 +6,11 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:27:46 by yasamankari   #+#    #+#                 */
+<<<<<<< Updated upstream
 /*   Updated: 2024/08/15 10:25:26 by ykarimi       ########   odam.nl         */
+=======
+/*   Updated: 2024/08/13 11:22:35 by ykarimi       ########   odam.nl         */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 

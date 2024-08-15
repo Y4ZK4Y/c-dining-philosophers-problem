@@ -6,7 +6,11 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
+<<<<<<< Updated upstream
 /*   Updated: 2024/08/15 10:25:52 by ykarimi       ########   odam.nl         */
+=======
+/*   Updated: 2024/08/13 11:32:45 by ykarimi       ########   odam.nl         */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +62,5 @@ void	error_exit(char *errmsg, int exit_status, t_info *info, int mutex)
 	if (mutex == 0)
 		destroy_mutexes(info);
 	if (exit_status != NVM)
-		exit(exit_status);
+		exit(exit_status); // 
 }

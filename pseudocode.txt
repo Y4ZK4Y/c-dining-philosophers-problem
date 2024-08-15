@@ -466,7 +466,8 @@ test((i+4)%5); // see if left phil can eat
 test( (i+1_ % 5)); //see if right phil can eat
 signal(mutex); / /exit critical
 
-
+1;
+		info->philos[i].right_fork_index = -1;
 
 
 // code from monitor
@@ -610,3 +611,10 @@ left fork is id -1
 	// if not, wait, change status to hungry
 	// if forks available
 	// lock forks
+
+
+
+
+
+./philo 800 100000 0 0
+lazy philosopher tester

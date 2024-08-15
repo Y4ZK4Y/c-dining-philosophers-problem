@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:24:38 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:39:40 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/13 11:30:02 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	log_message(t_philo *philo, enum e_philo_states philo_state)
 		"timestamp:%ld, philo %d died.\n"
 	};
 
-	elapsed_time = calculate_elapsed_time(philo->info->start_time);
+	elapsed_time = calculate_elapsed_time(philo->info->start_time); // move to line 30 
 	pthread_mutex_lock(&philo->info->write_lock); // error check
 	if (philo->info->end == false)
 	{
 		printf(messages[philo_state], elapsed_time, philo->id);
 		if (philo_state == DEAD)
 			philo->info->end = true;
-	}
+	} // thatd be communication
 	pthread_mutex_unlock(&philo->info->write_lock);
 }
