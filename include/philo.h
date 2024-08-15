@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/14 10:23:48 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/15 10:25:40 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define ERROR -1
 # define NVM 909
 # define FINE 0
+
 /******************************************************************************/
 /* Data Structures */
 
