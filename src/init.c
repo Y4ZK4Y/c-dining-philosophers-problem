@@ -6,15 +6,19 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-<<<<<<< Updated upstream
-/*   Updated: 2024/08/15 10:25:56 by ykarimi       ########   odam.nl         */
-=======
-/*   Updated: 2024/08/13 11:32:11 by ykarimi       ########   odam.nl         */
->>>>>>> Stashed changes
+/*   Updated: 2024/08/15 11:30:59 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	assign_forks(t_philo *philo)
+{
+	philo->left_fork_index = philo->id - 1;
+	philo->right_fork_index = philo->id;
+	if (philo->id == philo->info->input.num_of_philos)
+		philo->right_fork_index = 0;
+}
 
 void	init_philos(t_info *info)
 {
@@ -30,6 +34,7 @@ void	init_philos(t_info *info)
 		info->philos[i].left_fork_index = -1;
 		info->philos[i].right_fork_index = -1;
 		// assign forks here
+		assign_forks(&info->philos[i]);
 		i++;
 	}
 	info->end = false;
@@ -49,11 +54,13 @@ void	init_mutexes(t_info *info)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
 			error_exit("Initializing mutexes failed.", ERROR, info, 1);
-		// if (pthread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
-		// 	error_exit("Initializing mutexes failed.", ERROR, info, 1);
+		if (pthread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
+			error_exit("Initializing mutexes failed.", ERROR, info, 1);
 		i++;
 	}
 	if (pthread_mutex_init(&info->write_lock, NULL) != 0)
+		error_exit("Initializing mutexes failed.", ERROR, info, 1);
+	if (pthread_mutex_init(&info->start_lock, NULL) != 0)
 		error_exit("Initializing mutexes failed.", ERROR, info, 1);
 }
 

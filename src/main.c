@@ -6,11 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:26:43 by yasamankari   #+#    #+#                 */
-<<<<<<< Updated upstream
-/*   Updated: 2024/08/15 10:29:25 by ykarimi       ########   odam.nl         */
-=======
-/*   Updated: 2024/08/13 11:22:02 by ykarimi       ########   odam.nl         */
->>>>>>> Stashed changes
+/*   Updated: 2024/08/15 11:26:36 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +33,7 @@ void	create_threads(t_info *info)
 
 	i = 0;
 	// lock start mutex
+	pthread_mutex_lock(&info->start_lock);
 	info->lets_fuckin_go = false;
 	while (i < info->input.num_of_philos)
 	{
@@ -47,14 +44,15 @@ void	create_threads(t_info *info)
 		usleep(100);
 		i++;
 	}
+	info->start_time = get_current_time();
+	info->lets_fuckin_go = true;
+	pthread_mutex_unlock(&info->start_lock);
+	//unlock start mutex
+	// call monitor func
 	if (pthread_create(&info->monitor, NULL, monitor, info->philos) != 0)
 	{
 		error_exit("Creating threads failed.", ERROR, info, 0);
 	}
-	info->start_time = get_current_time();
-	info->lets_fuckin_go = true;
-	//unlock start mutex
-	// call monitor func
 }
 
 int	main(int argc, char *argv[])

@@ -6,31 +6,17 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:28:52 by yasamankari   #+#    #+#                 */
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-/*   Updated: 2024/08/13 10:24:51 by ykarimi       ########   odam.nl         */
-=======
-/*   Updated: 2024/08/12 17:23:43 by yasamankari   ########   odam.nl         */
->>>>>>> e507436b114563853af6faf015a3bf49aea133d1
-=======
-/*   Updated: 2024/08/13 11:08:05 by ykarimi       ########   odam.nl         */
->>>>>>> Stashed changes
+/*   Updated: 2024/08/15 11:32:29 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "philo.h"
 
-static void	assign_forks(t_philo *philo)
-{
-	philo->left_fork_index = philo->id - 1;
-	philo->right_fork_index = philo->id;
-	if (philo->id == philo->info->input.num_of_philos)
-		philo->right_fork_index = 0;
-}
 
 void	pickup_forks(t_philo *philo)
 {
-	assign_forks(philo);
+	//assign_forks(philo);
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->info->forks[philo->right_fork_index]);
@@ -47,13 +33,13 @@ void	pickup_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	//pthread_mutex_lock(&philo->state_mutex);
+	pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = EATING;
 	philo->last_meal_time = get_current_time();
 	philo->philo_state = EATING;
 	log_message(philo, philo->philo_state);
 	ft_usleep(philo->info->input.time_to_eat, philo);
-	//pthread_mutex_unlock(&philo->state_mutex);
+	pthread_mutex_unlock(&philo->state_mutex);
 	if (philo->id % 2)
 	{
 		pthread_mutex_unlock(&philo->info->forks \
@@ -72,19 +58,19 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-	//pthread_mutex_lock(&philo->state_mutex);
+	pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = THINKING;
 	log_message(philo, philo->philo_state);
-	//pthread_mutex_unlock(&philo->state_mutex);
+	pthread_mutex_unlock(&philo->state_mutex);
 	usleep(1000);
 }
 
 void	philo_sleep(t_philo *philo)
 {
-	//pthread_mutex_lock(&philo->state_mutex);
+	pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = SLEEPING;
 	log_message(philo, philo->philo_state);
-	//pthread_mutex_unlock(&philo->state_mutex);
+	pthread_mutex_unlock(&philo->state_mutex);
 	ft_usleep(philo->info->input.time_to_sleep, philo);
 }
 
@@ -119,10 +105,10 @@ void	*philo_life_cycle(void *arg)
 	{
 		if ((philo->info->end) == true)
 		{
-			//pthread_mutex_lock(&philo->state_mutex);
+			pthread_mutex_lock(&philo->state_mutex);
 			philo->philo_state = DEAD;
 			log_message(philo, DEAD);
-			//pthread_mutex_unlock(&philo->state_mutex);
+			pthread_mutex_unlock(&philo->state_mutex);
 			break ;
 		}
 		pickup_forks(philo);

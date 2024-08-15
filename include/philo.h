@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/15 10:25:40 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/15 11:24:07 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_philo
 	struct timeval		last_meal_time;
 	enum e_philo_states	philo_state;
 	t_info				*info;
-	//pthread_mutex_t		state_mutex;
+	pthread_mutex_t		state_mutex;
 	int					left_fork_index;
 	int					right_fork_index;
 }						t_philo;
@@ -75,6 +75,7 @@ typedef struct s_info
 	pthread_t			monitor;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		write_lock;
+	pthread_mutex_t		start_lock;
 	struct timeval		start_time;
 	bool				lets_fuckin_go;
 	bool				end;
