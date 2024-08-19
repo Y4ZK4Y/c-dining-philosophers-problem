@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:45:02 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 15:06:11 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/19 19:05:49 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,3 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-void	*ft_malloc(size_t bytes, t_info *info)
-{
-	void	*result;
-
-	result = malloc(bytes);
-	if (result == NULL)
-		error("Malloc failed.", info);
-	return (result);
-}

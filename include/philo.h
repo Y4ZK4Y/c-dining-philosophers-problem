@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 16:39:06 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/19 19:03:18 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,17 @@ typedef struct s_info
 	struct timeval		start_time;
 	bool				end;
 	int					threads_created;
-	int					mutexes_created;
-	
 }						t_info;
 
 /******************************************************************************/
 /* Parsing */
-void			get_input(t_input *input, int argc, char *argv[]);
-void			parse_input(t_input *input, int argc, char *argv[]);
+int				get_input(t_input *input, int argc, char *argv[]);
+int				parse_input(t_input *input, int argc, char *argv[]);
 
 /* Initializing the program */
-void			init(t_info *info);
+int				init(t_info *info);
 void			init_philos(t_info *info);
-void			init_mutexes(t_info *info);
+int				init_mutexes(t_info *info);
 
 /* Simulation */
 void			create_threads(t_info *info);

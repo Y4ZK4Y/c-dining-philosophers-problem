@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:26:43 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 15:40:33 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/19 19:07:49 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	create_threads(t_info *info)
 		if (pthread_create(&info->philos[i].thread, NULL, philo_life_cycle, \
 		&info->philos[i]) != 0)
 			error("Creating threads failed.", info, 0); // kill all the ones that alrady exist not the unborn ones
+		info->threads_created++;
 		usleep(100);
 		i++;
 	}
@@ -57,8 +58,10 @@ int	main(int argc, char *argv[])
 	t_info	info;
 
 	memset(&info, 0, sizeof(t_info));
-	get_input(&info.input, argc, argv);
-	init(&info);
+	if (get_input(&info.input, argc, argv) == 1)
+		return (1);
+	if (init(&info) == 1)
+		return (cleanup(info), 1);
 	create_threads(&info);
 	join_threads(&info);
 	monitor();
