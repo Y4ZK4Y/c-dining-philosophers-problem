@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parsing_utils.c                                    :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:45:02 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:54:43 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/19 15:06:11 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	*ft_malloc(size_t bytes, t_info *info)
 
 	result = malloc(bytes);
 	if (result == NULL)
-		error_exit("Malloc failed.", ERROR, info, 1);
+		error("Malloc failed.", info);
 	return (result);
 }

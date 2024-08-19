@@ -6,18 +6,15 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:27:46 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/15 11:28:31 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/19 14:22:27 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*monitor(void *arg)
+void	*monitor(t_info *info)
 {
-	t_philo	*philo;
-
-	philo = arg;
-	while (philo->info->end == false)
+	while (info->end == false)
 	{
 		if (philo->philo_state == INACTIVE)
 			break ;

@@ -6,14 +6,17 @@
 #    By: yasamankarimi <yasamankarimi@student.co      +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/07/30 11:39:41 by yasamankari   #+#    #+#                  #
-#    Updated: 2024/08/13 10:27:29 by ykarimi       ########   odam.nl          #
+#    Updated: 2024/08/15 18:38:05 by ykarimi       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra 
+# CFLAGS := -Wall -Werror -Wextra -fsanitize=thread
+
 INCLUDES := -I./include
+
 
 SRC_DIR := src
 INC_DIR := include

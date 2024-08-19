@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:23:14 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:23:33 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/19 15:31:53 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	parse_input(t_input *input, int argc, char *argv[])
 		errno = 0;
 		num = ft_strtol(argv[i], &endptr, 10);
 		if (errno != 0 || *endptr != '\0' || num < 0 || num > INT_MAX)
-			error_exit("Invalid input.", ERROR, NULL, 1);
+			error("Invalid input.", NULL, 0);
 		input_array[i - 1] = num;
 	}
 	input->num_of_philos = input_array[0];
@@ -38,8 +38,8 @@ void	parse_input(t_input *input, int argc, char *argv[])
 void	get_input(t_input *input, int argc, char *argv[])
 {
 	if (argc != 5)
-		error_exit("Invalid argument count.", ERROR, NULL, 1);
+		error("Invalid argument count.", NULL, 0);
 	parse_input(input, argc, argv);
 	if (input->num_of_philos <= 0)
-		error_exit("Can't host a party with no peeps.", ERROR, NULL, 1);
+		error("Can't host a party with no peeps.", NULL, 0);
 }

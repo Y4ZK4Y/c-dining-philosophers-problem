@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/15 11:24:07 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/19 16:39:06 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@
 /******************************************************************************/
 /* Macros */
 
-# define ERROR -1
-# define NVM 909
-# define FINE 0
 
 /******************************************************************************/
 /* Data Structures */
@@ -77,8 +74,10 @@ typedef struct s_info
 	pthread_mutex_t		write_lock;
 	pthread_mutex_t		start_lock;
 	struct timeval		start_time;
-	bool				lets_fuckin_go;
 	bool				end;
+	int					threads_created;
+	int					mutexes_created;
+	
 }						t_info;
 
 /******************************************************************************/
@@ -99,8 +98,6 @@ void			eat(t_philo *philo);
 void			philo_sleep(t_philo *philo);
 void			think(t_philo *philo);
 void			pickup_forks(t_philo *philo);
-
-/* Monitor */
 void			*monitor(void	*arg);
 
 /* Utility Functions */
@@ -122,7 +119,6 @@ void			*ft_malloc(size_t bytes, t_info *info);
 
 /* Error Handling */
 
-void			error_exit(char *errmsg, int exit_status, \
-				t_info *info, int mutex);
+void			error(char *errmsg, t_info *info, int mutex);
 
 #endif
