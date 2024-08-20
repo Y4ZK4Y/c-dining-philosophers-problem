@@ -6,13 +6,13 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 19:10:25 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/20 12:21:42 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static swap_forks(int *right, int *left)
+static void swap_forks(int *right, int *left)
 {
 	int temp;
 	temp = *right;
@@ -28,7 +28,7 @@ static void	assign_forks(t_philo *philo)
 	philo->left_fork_index = philo->id - 1;
 	philo->right_fork_index = philo->id;
 	if (philo->id % 2 == 0)
-		swap_forks(&philo->right_fork_index, philo->left_fork_index);
+		swap_forks(&philo->right_fork_index, &philo->left_fork_index);
 }
 
 void	init_philos(t_info *info)
@@ -76,9 +76,8 @@ static void	destroy_mutexes(t_info *info, int num_mutex)
 
 int	init_mutexes(t_info *info)
 {
-	int	i;
-	int	num_mutex;
-	pthread_mutex_t	*mutexes[] = { &info->write_lock, &info->start_lock};
+	int				i;
+	pthread_mutex_t	*mutexes[2] = { &info->write_lock, &info->start_lock};
 
 	i = 0;
 	while (i < 2)
@@ -92,7 +91,7 @@ int	init_mutexes(t_info *info)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
 			return (destroy_mutexes(info, 2 + i * 2), 1);
-		if (pthread_mutex_init(&info->philos[i], NULL) != 0)
+		if (pthread_mutex_init(&info->philos[i].state_mutex, NULL) != 0)
 			return (destroy_mutexes(info, 2 + i * 2 + 1), 1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 19:03:18 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/20 12:24:55 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_info
 	pthread_mutex_t		start_lock;
 	struct timeval		start_time;
 	bool				end;
-	int					threads_created;
 }						t_info;
 
 /******************************************************************************/
@@ -89,14 +88,14 @@ void			init_philos(t_info *info);
 int				init_mutexes(t_info *info);
 
 /* Simulation */
-void			create_threads(t_info *info);
-void			join_threads(t_info *info);
+int				create_threads(t_info *info);
+int				join_threads(t_info *info);
 void			*philo_life_cycle(void *arg);
 void			eat(t_philo *philo);
 void			philo_sleep(t_philo *philo);
 void			think(t_philo *philo);
 void			pickup_forks(t_philo *philo);
-void			*monitor(void	*arg);
+void			*monitor(t_info	*info);
 
 /* Utility Functions */
 size_t			ft_strlen(char *s);
@@ -112,11 +111,9 @@ struct timeval	get_current_time(void);
 long			calculate_elapsed_time(struct timeval start);
 void			ft_usleep(long time, t_philo *philo);
 
-/* Wrapper functions */
-void			*ft_malloc(size_t bytes, t_info *info);
-
 /* Error Handling */
-
-void			error(char *errmsg, t_info *info, int mutex);
+void			print_error(char *errmsg);
+void			program_end(t_info *info);
+void			cleanup(t_info *info);
 
 #endif

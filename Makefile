@@ -6,7 +6,7 @@
 #    By: yasamankarimi <yasamankarimi@student.co      +#+                      #
 #                                                    +#+                       #
 #    Created: 2024/07/30 11:39:41 by yasamankari   #+#    #+#                  #
-#    Updated: 2024/08/15 18:38:05 by ykarimi       ########   odam.nl          #
+#    Updated: 2024/08/20 12:18:43 by yasamankari   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,10 @@ SRC_DIR := src
 INC_DIR := include
 BUILD_DIR := bin
 
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = src/error_handling.c src/init.c src/input.c \
+		src/log.c src/main.c src/monitor.c src/parsing_input_utils.c \
+		src/philo_life_cycle.c src/time.c src/utils.c
+
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 19:09:44 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/20 12:18:32 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +51,4 @@ void program_end(t_info *info)
 	pthread_mutex_destroy(&info->start_lock);
 	cleanup(info);
 }
+

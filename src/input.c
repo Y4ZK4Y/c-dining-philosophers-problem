@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:23:14 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/19 19:03:07 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/20 12:18:34 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ int	parse_input(t_input *input, int argc, char *argv[])
 	input->time_to_sleep = input_array[3];
 	return (0);
 }
-
+// you can add more input checks and maybe account for the optional arg
 int	get_input(t_input *input, int argc, char *argv[])
 {
 	if (argc != 5)
 		return (print_error("Invalid argument count."), 1);
 	if (parse_input(input, argc, argv) == 1)
-		return (print_error("Invalid input.", 1));
+		return (print_error("Invalid input."), 1);
 	if (input->num_of_philos <= 0)
-		return (print_error("Can't host a party with no peeps.", 1));
+		return (print_error("Can't host a party with no peeps."), 1);
+	return (0);
 }
