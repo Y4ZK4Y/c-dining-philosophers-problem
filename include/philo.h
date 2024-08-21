@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 12:24:55 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/20 21:03:18 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_philo
 {
 	int					id;
 	pthread_t			thread;
-	struct timeval		last_meal_time;
+	long				last_meal_time;
 	enum e_philo_states	philo_state;
 	t_info				*info;
 	pthread_mutex_t		state_mutex;
@@ -69,11 +69,10 @@ typedef struct s_info
 {
 	t_input				input;
 	t_philo				*philos;
-	pthread_t			monitor;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		write_lock;
 	pthread_mutex_t		start_lock;
-	struct timeval		start_time;
+	long				start_time;
 	bool				end;
 }						t_info;
 
@@ -107,8 +106,8 @@ int				ft_isdigit(int c);
 void			log_message(t_philo *philo, enum e_philo_states philo_state);
 
 /* Time keeping functions */
-struct timeval	get_current_time(void);
-long			calculate_elapsed_time(struct timeval start);
+long	get_current_time(void);
+long			calculate_elapsed_time(long start);
 void			ft_usleep(long time, t_philo *philo);
 
 /* Error Handling */

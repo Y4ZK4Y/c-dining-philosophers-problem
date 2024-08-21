@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 12:18:32 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/20 15:07:37 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	cleanup(t_info *info)
 	if (info->forks != NULL)
 		free(info->forks);
 }
-
 
 void program_end(t_info *info)
 {

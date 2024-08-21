@@ -23,7 +23,7 @@
                 }
             ],
             "preLaunchTask": "build", // Ensure you have a corresponding task in tasks.json
-            "miDebuggerPath": "/usr/local/opt/llvm/bin/lldb", // Path to Homebrew LLVM LLDB
+            "miDebuggerPath": "/usr/bin/lldb", // Path to Homebrew LLVM LLDB
             "logging": {
                 "engineLogging": true
             }

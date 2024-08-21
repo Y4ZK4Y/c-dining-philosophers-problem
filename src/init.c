@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 12:21:42 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/20 21:29:06 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void swap_forks(int *right, int *left)
 {
-	int temp;
+	int	temp;
+
 	temp = *right;
 	*right = *left;
 	*left = temp;
@@ -25,8 +26,9 @@ static void	assign_forks(t_philo *philo)
 {
 	if (philo->id == philo->info->input.num_of_philos)
 		philo->right_fork_index = 0; // check if you need to  do the same for loner philo
+	else
+		philo->right_fork_index = philo->id;
 	philo->left_fork_index = philo->id - 1;
-	philo->right_fork_index = philo->id;
 	if (philo->id % 2 == 0)
 		swap_forks(&philo->right_fork_index, &philo->left_fork_index);
 }
@@ -39,7 +41,7 @@ void	init_philos(t_info *info)
 	while (i < info->input.num_of_philos)
 	{
 		info->philos[i].id = i + 1;
-		info->philos[i].last_meal_time = (struct timeval){0};
+		info->philos[i].last_meal_time = 0;
 		info->philos[i].philo_state = INACTIVE;
 		info->philos[i].info = info;
 		assign_forks(&info->philos[i]); // check
@@ -105,10 +107,11 @@ int	init(t_info *info)
 		return (print_error("Malloc failed."), 1);
 	init_philos(info);
 	info->forks = malloc(info->input.num_of_philos * sizeof(pthread_mutex_t));
-	if (info->philos == NULL)
+	if (info->forks == NULL)
 		return (print_error("Malloc failed."), 1);
 	if (init_mutexes(info) == 1)
 		return (print_error("Initializing mutexes failed."), 1);
 	info->end = false;
+	info->start_time = get_current_time();
 	return (0);
 }

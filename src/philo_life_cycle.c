@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:28:52 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 12:18:41 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/20 21:55:22 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 void	pickup_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->forks[philo->left_fork_index]);
+
+	pthread_mutex_lock(&philo->state_mutex);
+	philo->philo_state = TAKEN_FORK;
+	pthread_mutex_unlock(&philo->state_mutex);
+	log_message(philo, philo->philo_state);
+
 	pthread_mutex_lock(&philo->info->forks[philo->right_fork_index]);
 	pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = TAKEN_FORK;
@@ -33,8 +39,8 @@ void	eat(t_philo *philo)
 	log_message(philo, philo->philo_state);
 	ft_usleep(philo->info->input.time_to_eat, philo);
 
-	pthread_mutex_unlock(&philo->info->forks[philo->info->philos->left_fork_index]);
-	pthread_mutex_unlock(&philo->info->forks[philo->info->philos->right_fork_index]);
+	pthread_mutex_unlock(&philo->info->forks[philo->left_fork_index]);
+	pthread_mutex_unlock(&philo->info->forks[philo->right_fork_index]);
 }
 
 void	think(t_philo *philo)
@@ -43,7 +49,6 @@ void	think(t_philo *philo)
 	philo->philo_state = THINKING;
 	pthread_mutex_unlock(&philo->state_mutex);
 	log_message(philo, philo->philo_state);
-
 	usleep(1000);
 }
 
@@ -58,9 +63,8 @@ void	philo_sleep(t_philo *philo)
 
 static void	*loner_philo(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state_mutex);
+
 	philo->philo_state = TAKEN_FORK;
-	pthread_mutex_unlock(&philo->state_mutex);
 	log_message(philo, philo->philo_state);
 	ft_usleep(philo->info->input.time_to_die, philo);
 	return (NULL);
@@ -72,15 +76,16 @@ void	*philo_life_cycle(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	// set a lets_fuckin_go bolean (check it)
+
 	if (philo->info->input.num_of_philos == 1)
 		return (loner_philo(philo), NULL);
 	if (philo->id % 2 == 0)
 		usleep(1000);
-	philo->last_meal_time = get_current_time();
+	//philo->last_meal_time = get_current_time();
 	while (1)
 	{
-		if ((philo->info->end) == true)
+
+		if (philo->info->end == true)
 		{
 			pthread_mutex_lock(&philo->state_mutex);
 			philo->philo_state = DEAD;
@@ -93,6 +98,8 @@ void	*philo_life_cycle(void *arg)
 		philo_sleep(philo);
 		think(philo);
 	}
+	pthread_mutex_lock(&philo->state_mutex);
 	philo->philo_state = INACTIVE;
+	pthread_mutex_unlock(&philo->state_mutex);
 	return (NULL);
 }

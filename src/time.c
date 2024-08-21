@@ -6,35 +6,31 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:31:43 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:32:49 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/20 21:21:58 by yasamankari   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-struct timeval	get_current_time(void)
+long	get_current_time(void)
 {
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return (tv);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long	calculate_elapsed_time(struct timeval start)
+long	calculate_elapsed_time(long start)
 {
-	struct timeval	current;
-	long			seconds;
-	long			mseconds;
+	long	current;
 
 	current = get_current_time();
-	seconds = current.tv_sec - start.tv_sec;
-	mseconds = current.tv_usec - start.tv_usec;
-	return (seconds * 1000 + mseconds / 1000);
+	return (current - start);
 }
 
 void	ft_usleep(long time, t_philo *philo)
 {
-	struct timeval	action_start;
+	long	action_start;
 
 	action_start = get_current_time();
 	while (calculate_elapsed_time(action_start) < time && \
