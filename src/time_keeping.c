@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   time.c                                             :+:    :+:            */
+/*   time_keeping.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:31:43 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 21:21:58 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/21 17:33:28 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_current_time(void)
+long	get_time(void)
 {
 	struct timeval	tv;
 
@@ -20,11 +20,11 @@ long	get_current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long	calculate_elapsed_time(long start)
+long	elapsed_time(long start)
 {
 	long	current;
 
-	current = get_current_time();
+	current = get_time();
 	return (current - start);
 }
 
@@ -32,8 +32,10 @@ void	ft_usleep(long time, t_philo *philo)
 {
 	long	action_start;
 
-	action_start = get_current_time();
-	while (calculate_elapsed_time(action_start) < time && \
-	philo->info->end == false)
+	action_start = get_time();
+	pthread_mutex_lock(&philo->info->end_lock);
+	while (elapsed_time(action_start) < time && \
+	philo->info->philo_died == false)
 		usleep(100);
+	pthread_mutex_unlock(&philo->info->end_lock);
 }

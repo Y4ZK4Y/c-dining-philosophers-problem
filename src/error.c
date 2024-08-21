@@ -1,17 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   error_handling.c                                   :+:    :+:            */
+/*   error.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/20 15:07:37 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/08/21 17:19:06 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static size_t	ft_strlen(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
 static void	ft_putstr_fd(char *s, int fd)
 {
 	if (s == 0 || *s == 0)
@@ -40,14 +49,15 @@ void program_end(t_info *info)
 	int	i;
 
 	i = 0;
-	while (i < info->input.num_of_philos)
+	while (i < info->input.num_philos)
 	{
 		pthread_mutex_destroy(&info->forks[i]);
-		pthread_mutex_destroy(&info->philos[i].state_mutex);
+		pthread_mutex_destroy(&info->philos[i].death_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&info->write_lock);
 	pthread_mutex_destroy(&info->start_lock);
+	pthread_mutex_destroy(&info->end_lock);
 	cleanup(info);
 }
 

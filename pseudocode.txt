@@ -674,3 +674,32 @@ no one should die
 
 // comments: q
 // for deleting mutexes, keep track of what has been made so far
+
+
+
+test:
+./philo 1 200 200 200
+supposed to: 0, 1 has taken a fork
+
+mine: 0, philo 1 has taken a fork.
+    200, philo 1 died.
+
+
+./philo 2 200 200 200
+supposed to: 0, 1 has taken a fork.
+            0, 1 has taken a fork.
+            0, 1 is eating
+            199, 1 is sleeping
+            199, 2 has taken a fork
+            199, 2 has taken a fork
+            199, 2 is eating
+            200, 1 dies.
+
+mine:  0, philo 1 has taken a fork.
+        1, philo 1 has taken a fork.
+        1, philo 1 is eating.
+        200, philo 1 is sleeping.
+        ^C
+
+	// dont need state mutex , only for death, 
+    and dont change it just pass it to log function
