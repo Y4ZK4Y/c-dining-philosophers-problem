@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:19:06 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 14:23:08 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void program_end(t_info *info)
 	while (i < info->input.num_philos)
 	{
 		pthread_mutex_destroy(&info->forks[i]);
-		pthread_mutex_destroy(&info->philos[i].death_mutex);
+		pthread_mutex_destroy(&info->philos[i].death_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&info->write_lock);

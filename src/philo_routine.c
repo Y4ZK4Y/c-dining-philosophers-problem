@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:28:52 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:51:02 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 14:24:05 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	pickup_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->death_mutex);
+	pthread_mutex_lock(&philo->death_lock);
 	philo->last_meal_time = get_time();
-	pthread_mutex_unlock(&philo->death_mutex);
+	pthread_mutex_unlock(&philo->death_lock);
 	log_message(philo, EATING);
 	ft_usleep(philo->info->input.time_eat, philo);
 	pthread_mutex_unlock(&philo->info->forks[philo->left_fork]);

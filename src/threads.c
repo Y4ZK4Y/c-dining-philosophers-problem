@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/20 21:23:51 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:56:52 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 15:24:32 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static void	destroy_threads(t_info *info, int philos_created)
 
 	i = 0;
 	info->philo_died = true;
-	//pthread_mutex_lock(&info->end_lock);
-	//info->end = true;
-	//pthread_mutex_unlock(&info->end_lock);
+	pthread_mutex_lock(&info->end_lock);
+	info->end = true;
+	pthread_mutex_unlock(&info->end_lock);
 	while (i < philos_created)
 	{
 		if (pthread_join(info->philos[i].thread, NULL) != 0)
@@ -49,7 +49,7 @@ int	create_threads(t_info *info)
 	int	i;
 
 	i = 0;
-	//info->started = false;
+	info->started = false;
 	pthread_mutex_lock(&info->start_lock);
 	while (i < info->input.num_philos)
 	{
@@ -65,7 +65,7 @@ int	create_threads(t_info *info)
 		i++;
 	}
 	info->start_time = get_time();
-	//info->started = true;
+	info->started = true;
 	pthread_mutex_unlock(&info->start_lock);
 	return (0);
 }

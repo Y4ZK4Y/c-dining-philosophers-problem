@@ -6,7 +6,7 @@
 /*   By: ykarimi <ykarimi@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/21 17:07:57 by ykarimi       #+#    #+#                 */
-/*   Updated: 2024/08/21 17:19:38 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 14:20:35 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	destroy_locks(t_info *info, int num_lock)
 			if ((i - 2) % 2 == 0)
 				pthread_mutex_destroy(&info->forks[index]);
 			else
-				pthread_mutex_destroy(&info->philos[index].death_mutex);
+				pthread_mutex_destroy(&info->philos[index].death_lock);
 		}
 		i--;
 	}
@@ -59,7 +59,7 @@ int	init_locks(t_info *info)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
 			return (destroy_locks(info, 2 + i * 2), 1);
-		if (pthread_mutex_init(&info->philos[i].death_mutex, NULL) != 0)
+		if (pthread_mutex_init(&info->philos[i].death_lock, NULL) != 0)
 			return (destroy_locks(info, 2 + i * 2 + 1), 1);
 		i++;
 	}

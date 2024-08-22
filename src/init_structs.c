@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:45:09 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 15:23:35 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	init(t_info *info)
 		return (print_error("Malloc failed."), 1);
 	if (init_locks(info) == 1)
 		return (print_error("Initializing mutexes failed."), 1);
-	//pthread_mutex_lock(&info->end_lock);
-	info->end = false;
-	//pthread_mutex_unlock(&info->end_lock);
+	pthread_mutex_lock(&info->end_lock);
+	info->philo_died = false;
+	pthread_mutex_unlock(&info->end_lock);
 	info->start_time = get_time(); // why in here and why not
 	return (0);
 }

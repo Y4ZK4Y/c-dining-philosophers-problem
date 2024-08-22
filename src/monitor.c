@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:27:46 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:52:02 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 15:17:49 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,29 @@ int	init_monitor(t_philo *philo)
 	ret = pthread_create(&philo->monitor, NULL, monitor_routine, philo);
 	if (ret != 0)
 	{
-		philo->info->philo_died = true;
+		declare_death(philo->info);
 		return (1);
 	}
 	return (0);
 }
+
+// void	*monitor_routine(void *arg)
+// {
+// 	t_philo	*philo;
+
+// 	philo = arg;
+// 	while (!has_philo_died(philo->info))
+// 	{
+// 		pthread_mutex_lock(&philo->death_lock);
+// 		if (elapsed_time(philo->last_meal_time) >= philo->info->input.time_die)
+// 			log_message(philo, DEAD);
+// 		pthread_mutex_unlock(&philo->death_lock);
+// 		usleep(1000);
+// 	}
+// 	return (NULL);
+// }
+
+
 
 void	*monitor_routine(void *arg)
 {
@@ -64,10 +82,8 @@ void	*monitor_routine(void *arg)
 	philo = arg;
 	while (!has_philo_died(philo->info))
 	{
-		pthread_mutex_lock(&philo->death_mutex);
-		if (elapsed_time(philo->last_meal_time) >= philo->info->input.time_die)
+		if (has_philo_starved(philo) == true)
 			log_message(philo, DEAD);
-		pthread_mutex_unlock(&philo->death_mutex);
 		usleep(1000);
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:56:54 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/22 15:24:44 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_philo
 	pthread_t			thread;
 	pthread_t			monitor;
 	long				last_meal_time;
-	enum e_states		philo_state;
-	pthread_mutex_t		death_mutex;
+	enum e_states		state;
+	pthread_mutex_t		death_lock;
 	int					left_fork;
 	int					right_fork;
 
@@ -76,6 +76,7 @@ typedef struct s_info
 	long				start_time;
 	int					philo_died;
 	//int					started;
+	// int end;
 }						t_info;
 
 /******************************************************************************/
@@ -103,7 +104,7 @@ void			*monitor_routine(void *arg);
 int				init_monitor(t_philo *philo);
 
 /* Log */
-void			log_message(t_philo *philo, enum e_states philo_state);
+void			log_message(t_philo *philo, enum e_states state);
 
 /* Time keeping functions */
 long			get_time(void);
@@ -118,6 +119,9 @@ void			program_end(t_info *info);
 /* Philo utils (wrappers) */
 bool			has_philo_died(t_info *info);
 enum e_states	philo_state(t_philo *philo);
+bool			has_philo_starved(t_philo *philo);
+void			declare_death(t_info *info);
+
 
 /* Utility Functions */
 long			ft_strtol(const char *str, char **endptr, int base);
