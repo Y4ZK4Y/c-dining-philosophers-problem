@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:31:43 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/22 15:21:20 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 15:41:33 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	ft_usleep(long time, t_philo *philo)
 	long	action_start;
 
 	action_start = get_time();
-	pthread_mutex_lock(&philo->info->end_lock);
-	while (elapsed_time(action_start) < time && \
-	has_philo_died(philo->info) == false)
+	//pthread_mutex_lock(&philo->info->end_lock);
+	// while (elapsed_time(action_start) < time &&
+	// has_philo_died(philo->info) == false)
+	while (elapsed_time(action_start) < time)
 		usleep(100);
-	pthread_mutex_unlock(&philo->info->end_lock);
+	//pthread_mutex_unlock(&philo->info->end_lock);
 }

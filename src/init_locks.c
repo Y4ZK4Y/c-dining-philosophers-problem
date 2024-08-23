@@ -6,12 +6,11 @@
 /*   By: ykarimi <ykarimi@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/21 17:07:57 by ykarimi       #+#    #+#                 */
-/*   Updated: 2024/08/22 14:20:35 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 18:00:56 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 static void	destroy_locks(t_info *info, int num_lock)
 {

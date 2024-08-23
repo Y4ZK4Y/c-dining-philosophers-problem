@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:23:14 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/21 17:20:09 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 14:33:47 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,28 @@ int	parse_input(t_input *input, int argc, char *argv[])
 		errno = 0;
 		num = ft_strtol(argv[i], &endptr, 10);
 		if (errno != 0 || *endptr != '\0' || num < 0 || num > INT_MAX)
-			return (1);
+			return (ERROR);
 		input_array[i - 1] = num;
 	}
 	input->num_philos = input_array[0];
+	if (input->num_philos > 200)
+		return (print_error("Can't have more than 200 freeloaders."), ERROR);
 	input->time_die = input_array[1];
 	input->time_eat = input_array[2];
 	input->time_sleep = input_array[3];
-	return (0);
+	if (argc == 6)
+		input->num_meals = input_array[4];
+	return (FINE);
 }
-// you can add more input checks and maybe account for the optional arg
+
+/* accept 5 or 6 arguments, less than 200 philosophers */
 int	get_input(t_input *input, int argc, char *argv[])
 {
-	if (argc != 5)
-		return (print_error("Invalid argument count."), 1);
-	if (parse_input(input, argc, argv) == 1)
-		return (print_error("Invalid input."), 1);
+	if (argc != 5 && argc != 6)
+		return (print_error("Invalid argument count."), ERROR);
+	if (parse_input(input, argc, argv) == ERROR)
+		return (print_error("Invalid input."), ERROR);
 	if (input->num_philos <= 0)
-		return (print_error("Can't host a party with no peeps."), 1);
-	return (0);
+		return (print_error("Can't host a party with no peeps."), ERROR);
+	return (FINE);
 }

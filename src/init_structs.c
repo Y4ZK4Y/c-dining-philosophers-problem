@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/22 15:23:35 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 17:59:10 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,30 @@ void	init_philos(t_info *info)
 	i = 0;
 	while (i < info->input.num_philos)
 	{
+		memset(&info->philos[i], 0, sizeof(t_philo)); // is this necessary??
 		info->philos[i].id = i + 1;
-		info->philos[i].last_meal_time = 0;
+		//info->philos[i].last_meal_time = 0;
 		info->philos[i].info = info;
+		//info->philos[i].active = false;
 		assign_forks(&info->philos[i]);
 		i++;
 	}
 }
 
-
+/* mallocs for forks and philos */
 int	init(t_info *info)
 {
 	info->philos = malloc(info->input.num_philos * sizeof(t_philo));
 	if (info->philos == NULL)
-		return (print_error("Malloc failed."), 1);
+		return (print_error("Malloc failed."), ERROR);
 	init_philos(info);
 	info->forks = malloc(info->input.num_philos * sizeof(pthread_mutex_t));
 	if (info->forks == NULL)
-		return (print_error("Malloc failed."), 1);
-	if (init_locks(info) == 1)
-		return (print_error("Initializing mutexes failed."), 1);
-	pthread_mutex_lock(&info->end_lock);
-	info->philo_died = false;
-	pthread_mutex_unlock(&info->end_lock);
+		return (print_error("Malloc failed."), ERROR);
+	if (init_locks(info) == ERROR)
+		return (print_error("Initializing mutexes failed."), ERROR);
+	info->philo_died = false; // dont have threads yet so no need for lock
+	info->end = false;
 	info->start_time = get_time(); // why in here and why not
-	return (0);
+	return (FINE);
 }

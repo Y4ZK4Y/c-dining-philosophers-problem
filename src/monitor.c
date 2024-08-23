@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:27:46 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/22 15:17:49 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 18:26:35 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,13 @@
 
 int	init_monitor(t_philo *philo)
 {
-	int	ret;
-
-	ret = pthread_create(&philo->monitor, NULL, monitor_routine, philo);
-	if (ret != 0)
+	if (pthread_create(&philo->monitor, NULL, monitor_routine, philo) != 0)
 	{
-		declare_death(philo->info);
-		return (1);
+		force_end(philo->info);
+		//declare_death(philo->info);
+		return (ERROR);
 	}
-	return (0);
+	return (FINE);
 }
 
 // void	*monitor_routine(void *arg)
@@ -80,11 +78,17 @@ void	*monitor_routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	while (!has_philo_died(philo->info))
+	while (!is_end(philo->info))
 	{
-		if (has_philo_starved(philo) == true)
+		if (has_philo_starved(philo) || has_philo_died(philo->info))
+		{
 			log_message(philo, DEAD);
+			//declare_death(philo->info); // func should stop sim
+			force_end(philo->info);
+			break ;
+		}
 		usleep(1000);
 	}
 	return (NULL);
 }
+

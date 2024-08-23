@@ -703,3 +703,6 @@ mine:  0, philo 1 has taken a fork.
 
 	// dont need state mutex , only for death, 
     and dont change it just pass it to log function
+
+
+death_lock protect last_meal time and active - inside monitor join_threads

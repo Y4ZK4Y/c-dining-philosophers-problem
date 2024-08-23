@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/22 14:23:08 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 15:55:59 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void program_end(t_info *info)
 	pthread_mutex_destroy(&info->write_lock);
 	pthread_mutex_destroy(&info->start_lock);
 	pthread_mutex_destroy(&info->end_lock);
+	//pthread_mutex_destroy(&info->time_keeping_lock);
 	cleanup(info);
 }
 

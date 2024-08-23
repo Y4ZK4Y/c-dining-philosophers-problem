@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/22 15:24:44 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/08/23 17:56:01 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,20 @@
 /******************************************************************************/
 /* Macros */
 
+# ifndef FINE
+#  define FINE 0
+# endif
+
+# ifndef ERROR
+#  define ERROR 1
+# endif
 
 /******************************************************************************/
 /* Data Structures */
 
 typedef struct s_info	t_info;
 
-enum e_states
+enum e_message
 {
 	TAKEN_FORK,
 	EATING,
@@ -48,10 +55,12 @@ typedef struct s_philo
 	pthread_t			thread;
 	pthread_t			monitor;
 	long				last_meal_time;
-	enum e_states		state;
-	pthread_mutex_t		death_lock;
+	pthread_mutex_t		death_lock; // protects last_meal_time
 	int					left_fork;
 	int					right_fork;
+	int					times_eaten;
+	//bool				active;
+	// bool is_alive ?? 
 
 }						t_philo;
 
@@ -62,6 +71,7 @@ typedef struct s_input
 	long				time_die;
 	int					time_eat;
 	int					time_sleep;
+	int					num_meals;
 }						t_input;
 
 /* One main struct to rule them all */
@@ -70,13 +80,13 @@ typedef struct s_info
 	t_input				input;
 	t_philo				*philos;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		write_lock;
+	pthread_mutex_t		write_lock; // use for logging things
 	pthread_mutex_t		start_lock; // for a synchronized start
 	pthread_mutex_t		end_lock; // for when someone dies - protects philo_died flag
 	long				start_time;
 	int					philo_died;
-	//int					started;
-	// int end;
+	bool				end;
+	bool				start; // or bool
 }						t_info;
 
 /******************************************************************************/
@@ -104,12 +114,13 @@ void			*monitor_routine(void *arg);
 int				init_monitor(t_philo *philo);
 
 /* Log */
-void			log_message(t_philo *philo, enum e_states state);
+void			log_message(t_philo *philo, enum e_message msg);
 
 /* Time keeping functions */
 long			get_time(void);
 long			elapsed_time(long start);
 void			ft_usleep(long time, t_philo *philo);
+//void	record_timestamp(t_info *info, long *time);
 
 /* Error Handling */
 void			print_error(char *errmsg);
@@ -118,10 +129,10 @@ void			program_end(t_info *info);
 
 /* Philo utils (wrappers) */
 bool			has_philo_died(t_info *info);
-enum e_states	philo_state(t_philo *philo);
+//enum e_states	philo_state(t_philo *philo);
 bool			has_philo_starved(t_philo *philo);
 void			declare_death(t_info *info);
-
+bool			is_philo_full(t_philo *philo);
 
 /* Utility Functions */
 long			ft_strtol(const char *str, char **endptr, int base);
