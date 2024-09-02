@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   parsing_utils.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:33:04 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/03 20:51:29 by yasamankari   ########   odam.nl         */
+/*   Updated: 2024/09/02 16:51:11 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,3 @@ long	ft_strtol(const char *str, char **endptr, int base)
 		return (0);
 	return (parse_number(&str, base, is_negative, endptr));
 }
-

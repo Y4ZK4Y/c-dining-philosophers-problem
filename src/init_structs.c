@@ -6,13 +6,13 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:22:13 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/23 17:59:10 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 16:48:47 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void swap_forks(int *right, int *left)
+static void	swap_forks(int *right, int *left)
 {
 	int	temp;
 
@@ -24,7 +24,7 @@ static void swap_forks(int *right, int *left)
 static void	assign_forks(t_philo *philo)
 {
 	if (philo->id == philo->info->input.num_philos)
-		philo->right_fork = 0; // check if you need to  do the same for loner philo
+		philo->right_fork = 0;
 	else
 		philo->right_fork = philo->id;
 	philo->left_fork = philo->id - 1;
@@ -39,11 +39,12 @@ void	init_philos(t_info *info)
 	i = 0;
 	while (i < info->input.num_philos)
 	{
-		memset(&info->philos[i], 0, sizeof(t_philo)); // is this necessary??
+		memset(&info->philos[i], 0, sizeof(t_philo));
 		info->philos[i].id = i + 1;
-		//info->philos[i].last_meal_time = 0;
+		info->philos[i].last_meal_time = 0;
+		info->philos[i].times_eaten = 0;
 		info->philos[i].info = info;
-		//info->philos[i].active = false;
+		info->philos[i].status = joined;
 		assign_forks(&info->philos[i]);
 		i++;
 	}
@@ -58,11 +59,16 @@ int	init(t_info *info)
 	init_philos(info);
 	info->forks = malloc(info->input.num_philos * sizeof(pthread_mutex_t));
 	if (info->forks == NULL)
-		return (print_error("Malloc failed."), ERROR);
+	{
+		print_error("Malloc failed.");
+		return (cleanup(info), ERROR);
+	}
 	if (init_locks(info) == ERROR)
-		return (print_error("Initializing mutexes failed."), ERROR);
-	info->philo_died = false; // dont have threads yet so no need for lock
+	{
+		print_error("Initializing mutexes failed.");
+		return (cleanup(info), ERROR);
+	}
 	info->end = false;
-	info->start_time = get_time(); // why in here and why not
+	info->start_time = get_time();
 	return (FINE);
 }

@@ -6,12 +6,11 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/20 21:23:51 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/23 17:59:54 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 17:14:44 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	join_threads(t_info *info)
 {
@@ -32,12 +31,7 @@ static void	destroy_threads(t_info *info, int philos_created)
 	int	i;
 
 	i = 0;
-	//declare_death(info);
-	info->philo_died = true; // does it need to be lock protected?
 	info->end = true;
-	//pthread_mutex_lock(&info->end_lock);
-	//info->end = true;
-	//pthread_mutex_unlock(&info->end_lock);
 	while (i < philos_created)
 	{
 		if (pthread_join(info->philos[i].thread, NULL) != 0)
@@ -51,12 +45,11 @@ int	create_threads(t_info *info)
 	int	i;
 
 	i = 0;
-	info->start = false; //?
-	
+	info->start = false;
 	pthread_mutex_lock(&info->start_lock);
 	while (i < info->input.num_philos)
 	{
-		//info->philos[i].active = true;
+		info->philos[i].status = active;
 		if (pthread_create(&info->philos[i].thread, NULL, philo_routine, \
 		&info->philos[i]) != 0)
 		{

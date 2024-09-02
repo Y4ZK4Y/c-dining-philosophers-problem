@@ -6,7 +6,7 @@
 /*   By: ykarimi <ykarimi@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/21 17:07:57 by ykarimi       #+#    #+#                 */
-/*   Updated: 2024/08/23 18:00:56 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 16:47:26 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,26 @@ static void	destroy_locks(t_info *info, int num_lock)
 int	init_locks(t_info *info)
 {
 	int				i;
-	pthread_mutex_t	*mutexes[3] = { &info->write_lock, &info->start_lock, &info->end_lock};
+	pthread_mutex_t	*mutexes[3];
 
+	mutexes[0] = &info->write_lock;
+	mutexes[1] = &info->start_lock;
+	mutexes[2] = &info->end_lock;
 	i = 0;
 	while (i < 3)
 	{
 		if (pthread_mutex_init(mutexes[i], NULL) != 0)
-			return (destroy_locks(info, i), 1);
+			return (destroy_locks(info, i), ERROR);
 		i++;
 	}
 	i = 0;
 	while (i < info->input.num_philos)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
-			return (destroy_locks(info, 2 + i * 2), 1);
+			return (destroy_locks(info, 2 + i * 2), ERROR);
 		if (pthread_mutex_init(&info->philos[i].death_lock, NULL) != 0)
-			return (destroy_locks(info, 2 + i * 2 + 1), 1);
+			return (destroy_locks(info, 2 + i * 2 + 1), ERROR);
 		i++;
 	}
-	return (0);
+	return (FINE);
 }

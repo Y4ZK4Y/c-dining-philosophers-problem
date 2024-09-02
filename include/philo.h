@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:35:23 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/23 17:56:01 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 17:08:08 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ enum e_message
 	DEAD,
 };
 
+enum e_status
+{
+	active,
+	inactive,
+	joined
+};
+
 typedef struct s_philo
 {
 	t_info				*info;
@@ -55,13 +62,11 @@ typedef struct s_philo
 	pthread_t			thread;
 	pthread_t			monitor;
 	long				last_meal_time;
-	pthread_mutex_t		death_lock; // protects last_meal_time
+	pthread_mutex_t		death_lock;
 	int					left_fork;
 	int					right_fork;
 	int					times_eaten;
-	//bool				active;
-	// bool is_alive ?? 
-
+	enum e_status		status;
 }						t_philo;
 
 /* Commandline arguments the program receives */
@@ -80,13 +85,12 @@ typedef struct s_info
 	t_input				input;
 	t_philo				*philos;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		write_lock; // use for logging things
-	pthread_mutex_t		start_lock; // for a synchronized start
-	pthread_mutex_t		end_lock; // for when someone dies - protects philo_died flag
+	pthread_mutex_t		write_lock;
+	pthread_mutex_t		start_lock;
+	pthread_mutex_t		end_lock;
 	long				start_time;
-	int					philo_died;
 	bool				end;
-	bool				start; // or bool
+	bool				start;
 }						t_info;
 
 /******************************************************************************/
@@ -106,7 +110,7 @@ int				join_threads(t_info *info);
 /* Philosophers routine */
 void			*philo_routine(void *arg);
 void			pickup_forks(t_philo *philo);
-void			eat(t_philo *philo);
+int				eat(t_philo *philo);
 void			philo_sleep(t_philo *philo);
 
 /* Monitor thread */
@@ -126,13 +130,14 @@ void			ft_usleep(long time, t_philo *philo);
 void			print_error(char *errmsg);
 void			cleanup(t_info *info);
 void			program_end(t_info *info);
+void			destroy_mutex(t_info *info);
 
 /* Philo utils (wrappers) */
-bool			has_philo_died(t_info *info);
-//enum e_states	philo_state(t_philo *philo);
 bool			has_philo_starved(t_philo *philo);
 void			declare_death(t_info *info);
 bool			is_philo_full(t_philo *philo);
+bool			is_end(t_info *info);
+void			sync_time(t_philo *philo);
 
 /* Utility Functions */
 long			ft_strtol(const char *str, char **endptr, int base);

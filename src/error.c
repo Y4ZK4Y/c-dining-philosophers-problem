@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:21:54 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/23 15:55:59 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 16:44:54 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static size_t	ft_strlen(char *s)
 		i++;
 	return (i);
 }
+
 static void	ft_putstr_fd(char *s, int fd)
 {
 	if (s == 0 || *s == 0)
@@ -44,7 +45,7 @@ void	cleanup(t_info *info)
 		free(info->forks);
 }
 
-void program_end(t_info *info)
+void	destroy_mutex(t_info *info)
 {
 	int	i;
 
@@ -58,7 +59,4 @@ void program_end(t_info *info)
 	pthread_mutex_destroy(&info->write_lock);
 	pthread_mutex_destroy(&info->start_lock);
 	pthread_mutex_destroy(&info->end_lock);
-	//pthread_mutex_destroy(&info->time_keeping_lock);
-	cleanup(info);
 }
-

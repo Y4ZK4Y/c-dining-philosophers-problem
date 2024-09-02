@@ -6,7 +6,7 @@
 /*   By: yasamankarimi <yasamankarimi@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/03 20:24:38 by yasamankari   #+#    #+#                 */
-/*   Updated: 2024/08/23 16:50:32 by ykarimi       ########   odam.nl         */
+/*   Updated: 2024/09/02 16:50:09 by ykarimi       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,14 @@ void	log_message(t_philo *philo, enum e_message msg)
 		"%ld, philo %d is thinking.\n",
 		"%ld, philo %d died.\n"
 	};
-	//if (philo_state < 0 || philo_state >= sizeof(messages) / sizeof(messages[0]))
-    //	return ;
-	pthread_mutex_lock(&philo->info->write_lock); // error check
-	if (has_philo_died(philo->info))
-	{
-		pthread_mutex_unlock(&philo->info->write_lock);
-		return ;
-	}
-		time_passed = elapsed_time(philo->info->start_time); // lock or no?
-		printf(messages[msg], time_passed, philo->id);
-		pthread_mutex_unlock(&philo->info->write_lock);
 
-		//pthread_mutex_lock(&philo->info->end_lock);
-		// if (msg == DEAD)
-		// 	declare_death(philo->info);
-		//pthread_mutex_unlock(&philo->info->end_lock);
+	pthread_mutex_lock(&philo->info->write_lock);
+	if (!is_end(philo->info))
+	{
+		time_passed = elapsed_time(philo->info->start_time);
+		printf(messages[msg], time_passed, philo->id);
+		if (msg == DEAD)
+			declare_death(philo->info);
+	}
+	pthread_mutex_unlock(&philo->info->write_lock);
 }
